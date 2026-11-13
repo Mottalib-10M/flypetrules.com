@@ -1,0 +1,21 @@
+{
+ "name": "Fly Pet Rules",
+ "short_name": "Fly Pet Rules",
+ "description": "Flying with a dog or cat from the US in 2026: airline pet fees and carrier sizes, CDC rules to bring a dog back, USDA health certificates and country rules.",
+ "start_url": "/en/",
+ "display": "standalone",
+ "background_color": "#ffffff",
+ "theme_color": "#1F4E79",
+ "icons": [
+  {
+   "src": "/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png"
+  }
+ ]
+}

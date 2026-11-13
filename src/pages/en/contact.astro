@@ -1,0 +1,24 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { route } from '../../i18n/routes';
+import { CONTACT_EMAIL } from '../../data/site-config';
+import { contactPageSchema } from '../../lib/seo';
+const lang = 'en';
+const path = route('contact', lang);
+const description = 'Write to Fly Pet Rules about an airline pet fee, a CDC rule or a country rule that changed. E-mail only: nothing sold, nothing passed on to an airline or a shipper.';
+---
+<PageLayout title="Contact Fly Pet Rules: report a pet fee or a rule that moved" description={description} lang={lang} noindex={true} jsonLd={[contactPageSchema({ name: 'Contact', description, path, lang })]} breadcrumbs={[{ label: 'Contact' }]} showAuthor={false}>
+  <article class="prose prose-slate max-w-none prose-headings:font-serif">
+    <h1>Contact</h1>
+    <p>By e-mail: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. There is no form and no phone line, and nothing you write is passed on to an airline, a pet shipper or anyone else.</p>
+    <h2>What helps us most</h2>
+    <ul>
+      <li>An airline pet fee or carrier size that changed, with the link to the airline’s own page.</li>
+      <li>A new CDC or USDA APHIS rule, with its link and date.</li>
+      <li>The official pet page of an airline we could not read (United, JetBlue, Allegiant).</li>
+      <li>Embedding the fee calculator on a club, shelter or library page: the code is on the <a href={route('widget', lang)}>embed page</a>.</li>
+    </ul>
+    <h2>What we cannot do</h2>
+    <p>We do not book flights or pets, sell carriers, fill in certificates, or give veterinary advice. Your airline, a USDA-accredited veterinarian, the CDC and the destination’s authorities are the ones who decide.</p>
+  </article>
+</PageLayout>

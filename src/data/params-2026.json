@@ -1,0 +1,614 @@
+{
+ "_lisezmoi": "Every rule, fee and delay of the site lives here. Each value was read on the official document cited (CDC, USDA APHIS, airline page or contract of carriage) on the date of retrieved_at. Raw notes: reports/flypetrules-data/ of the factory. A value we could not read at its source is absent, never estimated.",
+ "year": 2026,
+ "retrieved_at": "2026-11-13",
+ "sources": {
+  "cdc_faq": {
+   "url": "https://www.cdc.gov/importation/dogs/faqs.html",
+   "label": {
+    "en": "CDC, Frequently Asked Questions on Dog Importations (updated August 27, 2026)"
+   }
+  },
+  "cdc_dogs": {
+   "url": "https://www.cdc.gov/importation/dogs/index.html",
+   "label": {
+    "en": "CDC, Bringing a Dog into the United States"
+   }
+  },
+  "cdc_highrisk": {
+   "url": "https://www.cdc.gov/importation/dogs/high-risk-countries.html",
+   "label": {
+    "en": "CDC, High-Risk Countries for Dog Rabies (updated April 15, 2026)"
+   }
+  },
+  "cdc_form": {
+   "url": "https://www.cdc.gov/importation/dogs/dog-import-form-instructions.html",
+   "label": {
+    "en": "CDC, CDC Dog Import Form instructions (updated April 28, 2026)"
+   }
+  },
+  "cdc_acf": {
+   "url": "https://www.cdc.gov/importation/dogs/approved-care-facilities.html",
+   "label": {
+    "en": "CDC, CDC-registered animal care facilities (updated September 1, 2026)"
+   }
+  },
+  "cdc_usvax": {
+   "url": "https://www.cdc.gov/importation/dogs/us-vaccinated-high-risk-countries.html",
+   "label": {
+    "en": "CDC, U.S.-vaccinated dogs arriving from high-risk countries"
+   }
+  },
+  "cdc_foreignvax": {
+   "url": "https://www.cdc.gov/importation/dogs/foreign-vaccinated-high-risk-countries.html",
+   "label": {
+    "en": "CDC, Foreign-vaccinated dogs arriving from high-risk countries"
+   }
+  },
+  "aphis_export": {
+   "url": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export",
+   "label": {
+    "en": "USDA APHIS, Pet travel from the United States to another country (updated August 14, 2026)"
+   }
+  },
+  "aphis_process": {
+   "url": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/pet-travel-process-overview",
+   "label": {
+    "en": "USDA APHIS, Pet travel process overview (updated June 18, 2026)"
+   }
+  },
+  "aphis_fees": {
+   "url": "https://www.aphis.usda.gov/pet-travel/us-to-foreign-country/cost-to-endorse",
+   "label": {
+    "en": "USDA APHIS, Cost to endorse your pet's health certificate (updated June 18, 2026)"
+   }
+  },
+  "aphis_mexico": {
+   "url": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/pet-travel-us-mexico",
+   "label": {
+    "en": "USDA APHIS, Pet travel from the United States to Mexico (updated October 27, 2026)"
+   }
+  },
+  "aphis_nws_pdf": {
+   "url": "https://www.aphis.usda.gov/sites/default/files/pet-dogs-nws-inspection.pdf",
+   "label": {
+    "en": "USDA APHIS, NWS inspection certificate for pet dogs going to Mexico (PDF)"
+   }
+  },
+  "aphis_canada": {
+   "url": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/pet-travel-us-canada",
+   "label": {
+    "en": "USDA APHIS, Pet travel from the United States to Canada (updated July 30, 2025)"
+   }
+  },
+  "aphis_france": {
+   "url": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/pet-travel-us-france",
+   "label": {
+    "en": "USDA APHIS, Pet travel from the United States to France (updated September 1, 2026)"
+   }
+  },
+  "aphis_tapeworm": {
+   "url": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/pet-travel-us-finland-malta-ireland-including-northern",
+   "label": {
+    "en": "USDA APHIS, Pet travel to Finland, Malta, Ireland or Norway (updated September 3, 2026)"
+   }
+  },
+  "aphis_passport": {
+   "url": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/european-union-eu-pet-passports",
+   "label": {
+    "en": "USDA APHIS, European Union pet passports (updated September 1, 2026)"
+   }
+  },
+  "aphis_uk": {
+   "url": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/pet-travel-us-united-kingdom-great-britain-england-scotland",
+   "label": {
+    "en": "USDA APHIS, Pet travel from the United States to Great Britain (updated October 6, 2026)"
+   }
+  },
+  "aphis_japan": {
+   "url": "https://www.aphis.usda.gov/pet-travel/us-to-another-country-export/pet-travel-us-japan",
+   "label": {
+    "en": "USDA APHIS, Pet travel from the United States to Japan (updated July 30, 2025)"
+   }
+  },
+  "cfia_dogs": {
+   "url": "https://inspection.canada.ca/importing-food-plants-or-animals/pets/eng/1326600389775/1326600500578",
+   "label": {
+    "en": "Canadian Food Inspection Agency, bringing pets to Canada"
+   }
+  },
+  "ecfr_382": {
+   "url": "https://www.ecfr.gov/current/title-14/chapter-II/subchapter-D/part-382/subpart-A/section-382.3",
+   "label": {
+    "en": "14 CFR 382.3, definition of a service animal on US flights"
+   }
+  },
+  "delta_pets": {
+   "url": "https://www.delta.com/us/en/pet-travel/overview",
+   "label": {
+    "en": "Delta Air Lines, Pet travel overview (read November 13, 2026)"
+   }
+  },
+  "delta_cargo": {
+   "url": "https://www.delta.com/us/en/pet-travel/shipping-your-pet",
+   "label": {
+    "en": "Delta Air Lines, Shipping your pet (read November 13, 2026)"
+   }
+  },
+  "aa_pets": {
+   "url": "https://www.aa.com/i18n/travel-info/special-assistance/pets.jsp",
+   "label": {
+    "en": "American Airlines, Traveling with pets (read November 13, 2026)"
+   }
+  },
+  "wn_coc": {
+   "url": "https://www.southwest.com/assets/pdfs/corporate-commitments/contract-of-carriage.pdf",
+   "label": {
+    "en": "Southwest Airlines, Contract of Carriage, 59th revision effective November 6, 2026"
+   }
+  },
+  "wn_fees": {
+   "url": "https://www.southwest.com/html/customer-service/travel-fees.html",
+   "label": {
+    "en": "Southwest Airlines, Optional travel charges (read November 13, 2026)"
+   }
+  },
+  "as_coc": {
+   "url": "https://alaskaair.com/content/legal/contract-of-carriage/rule-15",
+   "label": {
+    "en": "Alaska Airlines, Contract of Carriage revised August 25, 2026, Rule 15"
+   }
+  },
+  "as_dogs": {
+   "url": "https://news.alaskaair.com/company/what-to-know-before-traveling-with-a-canine-companion/",
+   "label": {
+    "en": "Alaska Airlines newsroom, traveling with a canine companion (August 26, 2026)"
+   }
+  },
+  "as_pets": {
+   "url": "https://www.alaskaair.com/content/travel-info/policies/pets-traveling-with-pets",
+   "label": {
+    "en": "Alaska Airlines, Traveling with pets policy"
+   }
+  },
+  "f9_faq": {
+   "url": "https://faq.flyfrontier.com/help/do-you-allow-pets-on-the-plane",
+   "label": {
+    "en": "Frontier Airlines, Pets onboard (last modified September 17, 2026)"
+   }
+  },
+  "f9_fees": {
+   "url": "https://www.flyfrontier.com/optional-services",
+   "label": {
+    "en": "Frontier Airlines, Optional services and fees (read November 13, 2026)"
+   }
+  }
+ },
+ "cdc": {
+  "minAgeMonths": 6,
+  "vaxBeforeLeaveDays": 28,
+  "formAfterVaxDays": 28,
+  "receiptLowRiskMonths": 6,
+  "quarantineDays": 28,
+  "minVaxAgeWeeks": 12,
+  "acf": [
+   [
+    "ATL",
+    "Atlanta, Georgia"
+   ],
+   [
+    "DFW",
+    "Dallas, Texas"
+   ],
+   [
+    "LAX",
+    "Los Angeles, California (two facilities)"
+   ],
+   [
+    "MIA",
+    "Miami, Florida"
+   ],
+   [
+    "JFK",
+    "New York, New York"
+   ],
+   [
+    "PHL",
+    "Philadelphia, Pennsylvania"
+   ],
+   [
+    "SEA",
+    "Seattle, Washington (cargo only)"
+   ],
+   [
+    "IAD",
+    "Washington, DC"
+   ]
+  ],
+  "acfCount": 9,
+  "highRisk": [
+   "Afghanistan",
+   "Algeria",
+   "Angola",
+   "Armenia",
+   "Azerbaijan",
+   "Bangladesh",
+   "Belarus",
+   "Belize",
+   "Benin",
+   "Bolivia",
+   "Botswana",
+   "Brazil",
+   "Brunei",
+   "Burkina Faso",
+   "Burundi",
+   "Cambodia",
+   "Cameroon",
+   "Central African Republic",
+   "Ceuta",
+   "Chad",
+   "China (excluding Hong Kong, Macau, and Taiwan)",
+   "Colombia",
+   "Comoros",
+   "Côte d'Ivoire (Ivory Coast)",
+   "Cuba",
+   "Democratic Republic of the Congo",
+   "Djibouti",
+   "Dominican Republic",
+   "Ecuador",
+   "Egypt",
+   "El Salvador",
+   "Equatorial Guinea",
+   "Eritrea",
+   "Eswatini (Swaziland)",
+   "Ethiopia",
+   "Gabon",
+   "Gambia",
+   "Georgia",
+   "Ghana",
+   "Guatemala",
+   "Guinea",
+   "Guinea-Bissau",
+   "Guyana",
+   "Haiti",
+   "Honduras",
+   "India",
+   "Indonesia",
+   "Iran",
+   "Iraq",
+   "Israel (including the West Bank and Gaza)",
+   "Jordan",
+   "Kazakhstan",
+   "Kenya",
+   "Kuwait",
+   "Kyrgyzstan",
+   "Laos",
+   "Lebanon",
+   "Lesotho",
+   "Liberia",
+   "Libya",
+   "Madagascar",
+   "Malawi",
+   "Malaysia",
+   "Mali",
+   "Mauritania",
+   "Melilla",
+   "Moldova",
+   "Mongolia",
+   "Morocco (including Western Sahara)",
+   "Mozambique",
+   "Myanmar (Burma)",
+   "Namibia",
+   "Nepal",
+   "Niger",
+   "Nigeria",
+   "North Korea",
+   "Oman",
+   "Pakistan",
+   "Peru",
+   "Philippines",
+   "Qatar",
+   "Republic of the Congo",
+   "Russia",
+   "Rwanda",
+   "São Tomé and Príncipe",
+   "Senegal",
+   "Sierra Leone",
+   "Somalia",
+   "South Africa",
+   "South Sudan",
+   "Sri Lanka",
+   "Sudan",
+   "Suriname",
+   "Syria",
+   "Tajikistan",
+   "Tanzania (Including Zanzibar)",
+   "Thailand",
+   "Timor-Leste",
+   "Togo",
+   "Tunisia",
+   "Turkey",
+   "Turkmenistan",
+   "Uganda",
+   "Ukraine",
+   "United Arab Emirates",
+   "Uzbekistan",
+   "Venezuela",
+   "Vietnam",
+   "Yemen",
+   "Zambia",
+   "Zimbabwe"
+  ]
+ },
+ "aphisFees": {
+  "none": 101,
+  "t1_2": 160,
+  "t1_2_extra": 10,
+  "t3_6": 206,
+  "t3_6_extra": 18,
+  "t7": 275,
+  "t7_extra": 21
+ },
+ "destinations": {
+  "mexico": {
+   "name": "Mexico",
+   "nwsDays": 5,
+   "nwsSince": "2026-08-03",
+   "catsCertSince": "2019-12-16",
+   "source": "aphis_mexico"
+  },
+  "canada": {
+   "name": "Canada",
+   "rabiesYears": 3,
+   "noVaxUnderMonths": 3,
+   "youngUnaccHours": 72,
+   "youngMonths": 8,
+   "source": "aphis_canada"
+  },
+  "eu": {
+   "name": "European Union",
+   "waitDays": 21,
+   "certValidDays": 30,
+   "endorseWithinDays": 10,
+   "onwardMonths": 6,
+   "maxPets": 5,
+   "newCertSince": "2026-10-01",
+   "source": "aphis_france"
+  },
+  "uk": {
+   "name": "Great Britain",
+   "minVaxWeeks": 15,
+   "waitDays": 21,
+   "certValidDays": 30,
+   "endorseWithinDays": 10,
+   "tapeMinH": 24,
+   "tapeMaxH": 120,
+   "source": "aphis_uk"
+  },
+  "japan": {
+   "name": "Japan",
+   "notifyDays": 40,
+   "firstVaxDays": 91,
+   "secondAfterDays": 30,
+   "titer": 0.5,
+   "titerYears": 2,
+   "waitDays": 180,
+   "source": "aphis_japan"
+  },
+  "tapeworm": {
+   "countries": [
+    "Finland",
+    "Malta",
+    "Ireland (including Northern Ireland)",
+    "Norway"
+   ],
+   "minDays": 1,
+   "maxDays": 5
+  }
+ },
+ "airlines": {
+  "delta": {
+   "name": "Delta",
+   "cabin": {
+    "us": 150,
+    "canada": 150,
+    "mexico": 200,
+    "caribbean": 200,
+    "europe": 200,
+    "japan": 200,
+    "southamerica": 200
+   },
+   "cabinNo": [
+    "hawaii",
+    "uk"
+   ],
+   "oldFee": 95,
+   "feeDate": "2025-04-08",
+   "species": "small dogs, cats and household birds (birds within the contiguous US)",
+   "minWeeks": 8,
+   "carrier": null,
+   "carrierRec": [
+    18,
+    11,
+    11
+   ],
+   "maxLb": null,
+   "perPassenger": "1 kennel",
+   "perFlight": "2 in Delta First, 4 in Comfort and Main",
+   "noCabinTo": [
+    "Australia",
+    "Barbados",
+    "Brazil, Colombia and the Dominican Republic (pets originating there)",
+    "Hawaii",
+    "Hong Kong",
+    "Iceland",
+    "Jamaica",
+    "New Zealand",
+    "South Africa",
+    "United Kingdom",
+    "United Arab Emirates"
+   ],
+   "checked": "Cargo only for active US military and State Department Foreign Service staff with permanent change of station orders",
+   "sources": [
+    "delta_pets",
+    "delta_cargo"
+   ]
+  },
+  "american": {
+   "name": "American",
+   "cabin": {
+    "us": 150,
+    "canada": 150,
+    "mexico": 150,
+    "caribbean": 150
+   },
+   "cabinNo": [
+    "hawaii",
+    "europe",
+    "uk",
+    "japan",
+    "southamerica"
+   ],
+   "species": "cats and dogs",
+   "minWeeks": 8,
+   "carrier": {
+    "soft": [
+     18,
+     11,
+     11
+    ],
+    "hard": [
+     19,
+     13,
+     9
+    ],
+    "hardRegional": [
+     16,
+     12,
+     8
+    ]
+   },
+   "maxLb": 20,
+   "perPassenger": "1 carrier",
+   "perFlight": "up to 20 carriers on mainline aircraft, 1 or 5 on regional jets",
+   "noCabinTo": [
+    "Hawaii",
+    "trans-Atlantic trips",
+    "Jamaica",
+    "Argentina, Brazil, Chile, Colombia, Uruguay"
+   ],
+   "checked": "Checked pets only for active-duty US military and State Department Foreign Service personnel on official orders: $200 per kennel ($150 to or from Brazil)",
+   "checkedFee": 200,
+   "sources": [
+    "aa_pets"
+   ]
+  },
+  "southwest": {
+   "name": "Southwest",
+   "cabin": {
+    "us": 125,
+    "hawaiiInter": 35
+   },
+   "cabinNo": [
+    "hawaii",
+    "canada",
+    "mexico",
+    "caribbean",
+    "europe",
+    "uk",
+    "japan",
+    "southamerica"
+   ],
+   "species": "small vaccinated domestic cats and dogs",
+   "minWeeks": 8,
+   "carrier": null,
+   "maxLb": null,
+   "perPassenger": "1 carrier, up to 2 animals of the same species",
+   "perFlight": "up to 6 carriers",
+   "noCabinTo": [
+    "any international itinerary",
+    "between the continental US and Hawaii"
+   ],
+   "checked": "No pets in the cargo compartment",
+   "sources": [
+    "wn_coc",
+    "wn_fees"
+   ]
+  },
+  "alaska": {
+   "name": "Alaska",
+   "cabin": {
+    "us": 100,
+    "hawaiiInter": 35
+   },
+   "cabinNo": [],
+   "species": "domesticated cats and dogs (in the cabin)",
+   "minWeeks": null,
+   "carrier": {
+    "soft": [
+     17,
+     11,
+     9.5
+    ]
+   },
+   "softOnly": true,
+   "maxLb": null,
+   "perPassenger": "1 carrier, up to 2 animals of the same species and similar size",
+   "perFlight": "limited by aircraft",
+   "noCabinTo": [],
+   "checked": "Baggage compartment: $200 each way per kennel; not on international routes other than to Canada, Mexico and Costa Rica",
+   "checkedFee": 200,
+   "sources": [
+    "as_coc",
+    "as_dogs",
+    "as_pets"
+   ]
+  },
+  "frontier": {
+   "name": "Frontier",
+   "cabin": {
+    "us": 149
+   },
+   "cabinNo": [
+    "canada",
+    "mexico",
+    "caribbean",
+    "europe",
+    "uk",
+    "japan",
+    "southamerica"
+   ],
+   "species": "dogs, cats, rabbits, guinea pigs, hamsters and small household birds",
+   "minWeeks": 8,
+   "carrier": {
+    "soft": [
+     18,
+     14,
+     11
+    ],
+    "hard": [
+     18,
+     14,
+     8
+    ]
+   },
+   "maxLb": null,
+   "perPassenger": "1 pet, one adult dog or cat per container",
+   "perFlight": "not stated",
+   "noCabinTo": [
+    "international flights (service dogs only)"
+   ],
+   "checked": "No checked pets, no cargo",
+   "sources": [
+    "f9_faq",
+    "f9_fees"
+   ]
+  }
+ },
+ "notRead": [
+  "United Airlines (united.com did not answer our requests)",
+  "JetBlue (jetblue.com refused automated reading)",
+  "Allegiant (allegiantair.com refused automated reading)",
+  "Hawaiian Airlines (pages now on alaskaair.com, rendered by script)"
+ ]
+}

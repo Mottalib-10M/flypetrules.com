@@ -1,0 +1,21 @@
+---
+import PageLayout from '../../layouts/PageLayout.astro';
+import { route } from '../../i18n/routes';
+import { AUTHOR_NAME } from '../../data/site-config';
+const lang = 'en';
+---
+<PageLayout title="Editorial policy of Fly Pet Rules: official sources, dated" description="How Fly Pet Rules writes its pages: pet rules read on CDC and USDA pages, fees read on each airline’s own page or contract, each cited with its date, nothing sold." lang={lang} noindex={true} breadcrumbs={[{ label: 'Editorial policy' }]} showAuthor={false}>
+  <article class="prose prose-slate max-w-none prose-headings:font-serif">
+    <h1>Editorial policy</h1>
+    <h2>Where the figures come from</h2>
+    <p>An entry rule enters the site only when it was read on a CDC or USDA APHIS page. An airline fee or carrier size enters only when it was read on the airline’s own pet page, fee page or contract of carriage. Each figure is stored with the address of the document and the date it was read. Blogs and pet shippers are read to see what readers ask, never to take a number; an airline we could not read gets no figure.</p>
+    <h2>How pages are written</h2>
+    <p>No fee is typed into the text. The rules live in one data file, and every page computes its figures from it when the site is built, with the same engine as the calculators. The airlines’ wording is never copied: we state the fact, the amount and the date, and link to their page.</p>
+    <h2>No veterinary content</h2>
+    <p>The site deals with formalities: documents, deadlines, fees and routes. It gives no advice on a pet’s health, names no medicine and tells no one whether a pet is fit to fly. That is the veterinarian’s job.</p>
+    <h2>Money</h2>
+    <p>{AUTHOR_NAME} receives nothing from airlines, pet shippers, carrier brands or clinics and links to none of them as a sponsor. There is no advertising today; if some is added it will be labeled and never placed above a calculator.</p>
+    <h2>Updates and corrections</h2>
+    <p>Nothing on the site updates by itself. Each page shows the date its sources were last read. When an airline or an agency changes a rule, the pages keep the figures they show until the new document is read. A reported error is checked against the official document and, once fixed, moves the date. Write through the <a href={route('contact', lang)}>contact page</a>; the rules are on the <a href={route('method', lang)}>method page</a>.</p>
+  </article>
+</PageLayout>

@@ -1,0 +1,40 @@
+---
+/** Method: the documents, how each figure is built, a worked example, the limits. Figures from the kit. */
+import PageLayout from '../../layouts/PageLayout.astro';
+import { route } from '../../i18n/routes';
+import { KIT as K } from '../../lib/kit';
+import { src, table } from '../../lib/helpers';
+import { VALUE } from '../../content/home';
+import { breadcrumbSchema, webPageSchema } from '../../lib/seo';
+const lang = 'en';
+const path = route('method', lang);
+const title = 'Pet Travel Rules Method 2026: CDC, USDA and Airline Sources';
+const description = 'How the pet travel figures are built in 2026: CDC dog import rules, USDA APHIS destination pages and fees, and five airlines read on their pages and contracts.';
+const dl = K.feeOr('delta', 'us');
+---
+<PageLayout title={title} description={description} lang={lang} jsonLd={[webPageSchema({ name: 'How the figures are built', description, path, lang }), breadcrumbSchema([{ name: 'Home', path: route('home', lang) }, { name: 'How the figures are built', path }])]} breadcrumbs={[{ label: 'How the figures are built' }]}>
+  <article class="prose prose-slate max-w-none prose-headings:font-serif">
+    <h1>How the pet travel figures are built</h1>
+    <p><strong>Every fee and rule on this site was read on the document of the body that sets it: the airline for its fee and carrier, the CDC for a dog entering the United States, USDA APHIS for what a foreign country asks. Nothing is estimated; a figure we could not read is not shown.</strong></p>
+    <p>{VALUE}</p>
+    <h2>1. Airline fees and carriers</h2>
+    <p>Five airlines were read on {K.day(K.P.retrieved_at)}: Delta on its <Fragment set:html={src('delta_pets', 'pet travel page')} />, American on its <Fragment set:html={src('aa_pets', 'pets page')} />, Southwest in its <Fragment set:html={src('wn_coc', 'contract of carriage of November 6, 2026')} /> and its <Fragment set:html={src('wn_fees', 'fee page')} />, Alaska in its <Fragment set:html={src('as_coc', 'contract of carriage of August 25, 2026')} /> and <Fragment set:html={src('as_dogs', 'its newsroom guide of August 26, 2026')} />, Frontier on its <Fragment set:html={src('f9_faq', 'pet FAQ')} /> and <Fragment set:html={src('f9_fees', 'fee page')} />. The fee of a route is shown only when the airline writes it for that route; a refusal is shown only when the airline writes it. Everything else reads “not published”. United, JetBlue and Allegiant refused or did not answer our requests, and we did not work around that.</p>
+    <p>For the carrier checker, the three sides you enter are sorted from largest to smallest and compared with the airline’s maximum sorted the same way, so a carrier entered as 11 x 18 x 11 is read like 18 x 11 x 11. Weight is checked only where the airline publishes a limit: American, {K.A('american').maxLb} pounds for the pet and the carrier.</p>
+    <h2>2. Entry into the United States</h2>
+    <p>The CDC rules come from its <Fragment set:html={src('cdc_faq', 'FAQ on dog importations')} />, its <Fragment set:html={src('cdc_form', 'Dog Import Form instructions')} />, its <Fragment set:html={src('cdc_highrisk', 'list of high-risk countries')} /> ({K.HR.length} entries, kept as published) and its <Fragment set:html={src('cdc_acf', 'list of animal care facilities')} />. The checker puts a dog in one of the CDC’s three cases from two answers: was it in a high-risk country in the last six months, and where was it vaccinated.</p>
+    <h2>3. Destinations and USDA fees</h2>
+    <p>Each destination’s rules come from its USDA APHIS page, dated on the page: Mexico, Canada, France for the European Union, Great Britain, Japan, and the page for Finland, Malta, Ireland and Norway. The endorsement fees are those of the <Fragment set:html={src('aphis_fees', 'APHIS schedule')} />. The planner counts days before the flight; it does not know your pet’s history, which only your veterinarian’s records show.</p>
+    <h2>4. A worked example</h2>
+    <p>The example case of the site is a small dog flying Delta in the cabin, round trip within the mainland US, in a soft carrier of {K.in([...K.EX.dims])} weighing {K.EX.lb} pounds with the dog. Delta charges {K.usd(dl)} each way, so {K.usd(dl * 2)} for the round trip. The carrier is within the size Delta recommends, within American’s soft maximum and Frontier’s, and too high for Alaska’s soft limit of {K.in(K.A('alaska').carrier!.soft!)}.</p>
+    <Fragment set:html={table(['Step', 'Value'], [['Delta fee, one way, within the US', K.usd(dl)], ['Legs', '2'], ['Airline fees', K.usd(dl * 2)], ['USDA endorsement (not needed within the US)', '$0'], ['CDC Dog Import Form (no trip abroad)', 'not needed']], 'The example case, step by step', ['l', 'r'])} />
+    <h2>5. Limits</h2>
+    <ul>
+      <li>Airlines change fees and rules without notice; the booking screen and the agent at the counter decide.</li>
+      <li>Under-seat space varies by aircraft: a carrier within the published maximum can still be refused.</li>
+      <li>No veterinary information: vaccines, tests and doses appear only as dates and documents the rules require.</li>
+      <li>Hawaii’s state entry rules, pet shipper prices and vet prices are not covered.</li>
+      <li>Nothing here is veterinary, legal or travel advice.</li>
+    </ul>
+    <p>Corrections: <a href={route('contact', lang)}>contact page</a>.</p>
+  </article>
+</PageLayout>
