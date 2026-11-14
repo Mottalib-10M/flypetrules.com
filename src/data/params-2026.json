@@ -182,6 +182,24 @@
    "label": {
     "en": "Frontier Airlines, Optional services and fees (read November 13, 2026)"
    }
+  },
+  "aphis_pettravel": {
+   "url": "https://www.aphis.usda.gov/pet-travel",
+   "label": {
+    "en": "USDA APHIS, Travel with a pet (last modified March 20, 2026, read November 14, 2026)"
+   }
+  },
+  "aphis_import": {
+   "url": "https://www.aphis.usda.gov/pet-travel/another-country-to-us-import",
+   "label": {
+    "en": "USDA APHIS, Pet travel from another country to the United States (last modified March 19, 2026, read November 14, 2026)"
+   }
+  },
+  "iata_pets": {
+   "url": "https://www.iata.org/en/programs/cargo/live-animals/pets/",
+   "label": {
+    "en": "IATA, Pets: container requirements of the Live Animals Regulations (CR1, LAR 2026), read November 14, 2026"
+   }
   }
  },
  "cdc": {
@@ -610,5 +628,47 @@
   "JetBlue (jetblue.com refused automated reading)",
   "Allegiant (allegiantair.com refused automated reading)",
   "Hawaiian Airlines (pages now on alaskaair.com, rendered by script)"
- ]
+ ],
+ "iata": {
+  "_note": "IATA Live Animals Regulations, Container Requirement 1, as published on iata.org (read 2026-11-14): length = A + B/2, width = C x 2 (x3 for two animals, x4 for three), height = D plus bedding, 10 % larger for snub-nosed breeds. Internal dimensions.",
+  "lengthB": 0.5,
+  "widthC": {
+   "1": 2,
+   "2": 3,
+   "3": 4
+  },
+  "snubPct": 10,
+  "source": "iata_pets"
+ },
+ "aphis": {
+  "pettravelModified": "2026-03-20",
+  "importModified": "2026-03-19",
+  "poultry": [
+   "chickens",
+   "doves",
+   "ducks",
+   "geese",
+   "grouse",
+   "guinea fowl",
+   "partridges",
+   "pea fowl",
+   "pheasants",
+   "pigeons",
+   "quail",
+   "swans",
+   "turkeys"
+  ],
+  "birdsMaxAsPets": 5,
+  "pets": [
+   "dogs",
+   "cats",
+   "ferrets",
+   "rabbits",
+   "rodents",
+   "hedgehogs and tenrecs",
+   "reptiles",
+   "amphibians",
+   "birds (not all kinds)"
+  ]
+ }
 }

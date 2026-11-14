@@ -11,10 +11,10 @@ const EU = K.D.eu, UK = K.D.uk, JP = K.D.japan, MX = K.D.mexico;
 export const VALUE = `Airline pet fees are scattered over five websites and copied, often wrong, by blogs paid per click on a pet carrier. Entry rules sit on two government sites written for veterinarians. This site reads both at the source, the CDC and USDA APHIS pages and each airline’s own pet page or contract of carriage, and puts them side by side: the fee for your route, whether your carrier fits, what the destination asks and how many days it takes, and what your dog needs to come back into the United States. Every figure carries its date.`;
 
 export const HOME = {
-  title: 'Airline Pet Fees 2026: Flying With a Dog or Cat From the US',
+  title: 'Pet Travel 2026: Airline Pet Fees, Dogs and Cats From the US',
   description: 'Airline pet fees in 2026 for Delta, American, Southwest, Alaska and Frontier by route, carrier limits, CDC rules to bring a dog back and USDA certificates.',
-  h1: 'Airline pet fees and the rules for flying with a dog or cat',
-  answer: `Airline pet fees for a dog or cat in the cabin on a flight within the mainland US run from ${K.usd(as)} each way on Alaska to ${K.usd(dl)} on Delta and American. Abroad, the destination’s paperwork and the CDC rules for the return weigh more than the fee.`,
+  h1: 'Pet travel: airline pet fees and rules for a dog or cat',
+  answer: `Pet travel fees for a dog or cat in the cabin within the mainland US run from ${K.usd(as)} each way on Alaska to ${K.usd(dl)} on Delta and American. Abroad, the destination’s paperwork and the CDC rules for the return weigh more than the fee.`,
   intro: 'Pick the airline and the route: the calculator gives the in-cabin pet fee and compares the five airlines we read.',
   resume: `Airline pet fees on US airlines are charged each way, per pet carrier, and only for a small pet that rides in a carrier under the seat in front of you. On flights within the mainland United States, read on November 13, 2026, Alaska charges ${K.usd(as)}, Southwest ${K.usd(wn)}, Frontier ${K.usd(f9)}, and Delta and American ${K.usd(dl)}. A round trip with one dog on Delta therefore costs ${K.usd(RT)} in fees. Southwest and Frontier take no pet on international flights, American takes none in the cabin across the Atlantic, and Delta charges ${K.usd(K.feeOr('delta', 'europe'))} each way abroad but refuses pets in the cabin to the United Kingdom and Hawaii. Large dogs no longer fly as checked baggage on Delta or American unless the owner is on military or State Department orders. Leaving the country adds a health certificate and, for the European Union, Great Britain or Japan, a USDA endorsement that costs ${K.usd(K.F.none)} or more. Coming back, every dog needs a CDC Dog Import Form receipt and must be at least ${K.CDC.minAgeMonths} months old.`,
   faqs: [
@@ -30,12 +30,12 @@ export const HOME = {
 <h2>Airline pet fees on your route: how to read the result</h2>
 <p>The example is a small dog flying Delta in the cabin, round trip within the mainland United States: ${K.usd(dl)} each way, ${K.usd(RT)} in all. Change the airline or the route and the table under the result compares the five airlines for the same trip. A fee shown as “No pet in the cabin” means the airline refuses pets on that route; “Not published” means we found no fee on the pages we could read, so the airline must tell you.</p>
 <p>The fee is per carrier and per direction, not per ticket. Two pets in one carrier count as one fee on Southwest and Alaska, which accept two animals of the same species in a carrier; Delta allows it only for two young pets of the same breed. A connection does not double the fee on these airlines, but a long stopover can: American writes that its fees apply to each destination without a stopover of four hours or more.</p>
-<p>Before you pay, measure the carrier. The ${h.a('dog-carrier-size-airline', 'carrier size checker')} compares it with the published maximum of each airline.</p>
+<p>Before you pay, measure the carrier. The ${h.a('dog-carrier-size-airline', 'carrier size checker')} compares it with the published maximum of each airline, the ${h.a('pet-carrier', 'pet carrier page')} gives the largest size two airlines of one trip both accept, and the ${h.a('dog-carrier', 'dog carrier page')} sizes a carrier from your dog’s measurements with the IATA formula.</p>
 ${h.mini('carrier', { t: 'Will your carrier fit?', p: ['l', 'w', 'h'] })}
 `,
   /** Open sections. */
   guide: (h: Helpers) => `
-<h2>What each airline allows in the cabin</h2>
+<h2>Pet travel by air: what each airline allows in the cabin</h2>
 <p>All five airlines carry small cats and dogs in the cabin; they differ on the other animals, the carrier and the routes. Delta also accepts household birds within the contiguous US, and Frontier rabbits, guinea pigs, hamsters and small birds. Alaska accepts only cats and dogs in the cabin and wants a soft carrier no larger than ${K.in(AS.carrier!.soft!)}. American publishes three sizes depending on the carrier and the aircraft, and a weight limit of ${AA.maxLb} pounds for the pet and the carrier together, the only weight limit among the five.</p>
 ${h.table(['Airline', 'In the cabin, within the US', 'Carrier limit', 'Abroad'], [
     [DL.name, `${K.usd(dl)} each way`, `under the seat; ${K.in(DL.carrierRec!)} soft recommended`, `${K.usd(K.feeOr('delta', 'europe'))}; not to the UK or Hawaii`],
@@ -62,7 +62,7 @@ ${h.mini('plan', { t: 'How many days do you need?', p: ['dest', 'days'] })}
 ${h.mini('cost', { t: 'Fees for a trip abroad', p: ['dest'], d: { region: 'europe', dest: 'eu' } })}
 ` },
     { id: 'documents', title: 'Health certificates, USDA endorsement and the pet passport', html: (h: Helpers) => `
-<p>The health certificate for a trip abroad is the destination’s own form, filled in by a USDA-accredited veterinarian, not by any vet. For the European Union and Great Britain it must then be endorsed by USDA APHIS, either online through the veterinarian’s account in the Veterinary Export Health Certification System or by mailing the original with a prepaid return label (${h.src('aphis_process', 'APHIS process overview')}). Canada and Mexico need no endorsement.</p>
+<p>The health certificate for a trip abroad is the destination’s own form, filled in by a USDA-accredited veterinarian, not by any vet. For the European Union and Great Britain it must then be endorsed by USDA APHIS, either online through the veterinarian’s account in the Veterinary Export Health Certification System or by mailing the original with a prepaid return label (${h.src('aphis_process', 'APHIS process overview')}). Canada and Mexico need no endorsement. The ${h.a('aphis-pet-travel', 'APHIS pet travel page')} explains what USDA does in each direction.</p>
 <p>The EU pet passport is not available in the United States: APHIS states that only an official veterinarian in an EU member state can issue one (${h.src('aphis_passport', 'APHIS page on EU pet passports')}). A passport issued in Europe can replace the certificate for a return to the EU only while the rabies vaccine recorded in it by an EU vet is still valid. The ${h.a('pet-health-certificate', 'health certificate page')} and the ${h.a('pet-passport', 'pet passport page')} go through each case.</p>
 ` },
     { id: 'cats', title: 'Cats: fewer papers, the same airline rules', html: (h: Helpers) => `

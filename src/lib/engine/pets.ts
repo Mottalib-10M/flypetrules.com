@@ -109,3 +109,36 @@ export function timeline(dest: Dest, dog: boolean, vaxOk: boolean): { steps: Ste
   if (dog && (dest === 'uk' || dest === 'tapeworm')) steps.push({ label: dest === 'uk' ? 'Tapeworm dose given and recorded by a USDA-accredited vet' : 'Tapeworm dose given and recorded by a vet (APHIS names both a USDA-accredited and an EU vet)', day: dest === 'uk' ? U.tapeMaxH / 24 : T.maxDays, note: `${dest === 'uk' ? `${U.tapeMinH} to ${U.tapeMaxH} hours` : `${T.minDays} to ${T.maxDays} days`} before arrival` });
   return { steps, minDays: vaxOk ? 0 : R.waitDays };
 }
+
+/**
+ * IATA Live Animals Regulations, Container Requirement 1 (params-2026.json > iata, read on iata.org on 2026-11-14):
+ * the smallest INTERNAL size of a container for a dog or cat, from four measurements of the largest animal.
+ * A = nose to root of tail, B = floor to elbow, C = width at the shoulders or widest point, D = standing height
+ * (top of head or ear tip). Height adds the bedding, which the reader enters. Snub-nosed breeds: 10 % larger.
+ */
+export const IATA = P.iata;
+export function iataContainer(a: number, b: number, c: number, d: number, animals = 1, snub = false, bedding = 0): number[] {
+  const k = IATA.widthC[String(Math.min(3, Math.max(1, Math.round(animals)))) as '1' | '2' | '3'];
+  const f = snub ? 1 + IATA.snubPct / 100 : 1;
+  return [(a + b * IATA.lengthB) * f, c * k * f, (d + bedding) * f];
+}
+
+/**
+ * The largest carrier that meets the published in-cabin limit of every airline of a trip: side by side, largest
+ * to largest, the smallest of the limits. Airlines that publish no maximum add no constraint and are listed apart.
+ */
+export function commonCarrier(ids: string[], soft: boolean): { box: number[] | null; maxLb: number | null; refused: string[]; noLimit: string[] } {
+  let box: number[] | null = null, maxLb: number | null = null;
+  const refused: string[] = [], noLimit: string[] = [];
+  for (const id of [...new Set(ids)]) {
+    const a = AIRLINES[id];
+    if (!a) continue;
+    if (a.maxLb !== null) maxLb = maxLb === null ? a.maxLb : Math.min(maxLb, a.maxLb);
+    if (!soft && a.softOnly) { refused.push(id); continue; }
+    const m = a.carrier ? (soft ? a.carrier.soft : a.carrier.hardRegional ?? a.carrier.hard) : undefined;
+    if (!m) { noLimit.push(id); continue; }
+    const s = sorted(m);
+    box = box ? sorted(box).map((x, i) => Math.min(x, s[i])) : s;
+  }
+  return { box, maxLb, refused, noLimit };
+}

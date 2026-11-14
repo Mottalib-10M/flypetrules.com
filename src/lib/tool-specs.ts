@@ -7,8 +7,9 @@ import type { ToolSpec, V, Input, ToolOut } from './tool-types';
 import { formatMoney, formatNumber } from './format';
 import {
   AIRLINES, AIRLINE_IDS, REGIONS, regionLabel, cabinFee, tripFee, carrierCheck, endorsementFee, HIGH_RISK, CDC, cdcPathway,
-  timeline, DEST, type Dest,
+  timeline, DEST, type Dest, iataContainer, commonCarrier, fitsBox, IATA,
 } from './engine/pets';
+import P from '../data/params-2026.json';
 
 export const usd = (x: number) => `${x < -0.5 ? '-' : ''}${formatMoney(Math.abs(Math.round(x)), 0)}`;
 const n = (v: V, k: string) => Number(v[k]) || 0;
@@ -161,6 +162,79 @@ function plan(v: V): ToolOut {
   };
 }
 
+
+/** Pet carrier: the largest carrier that every airline of the trip accepts in the cabin. */
+const LEG_OPTIONS = [{ value: 'none', label: 'No other airline' }, ...AIRLINE_OPTIONS];
+function common(v: V): ToolOut {
+  const ids = [s(v, 'a1'), s(v, 'a2')].filter((x) => x !== 'none'), soft = s(v, 'type') === 'soft';
+  const r = commonCarrier(ids, soft), names = [...new Set(ids)].map((id) => AIRLINES[id].name);
+  const trip = names.join(' and ');
+  const rows: Array<[string, string]> = ids.length ? [...new Set(ids)].map((id) => {
+    const a = AIRLINES[id];
+    if (!soft && a.softOnly) return [a.name, 'soft carriers only in the cabin'];
+    const m = a.carrier ? (soft ? a.carrier.soft : a.carrier.hardRegional ?? a.carrier.hard) : undefined;
+    return [a.name, m ? `${inches(m)}${a.maxLb ? `, ${a.maxLb} lb with the pet` : ''}${!soft && a.carrier?.hardRegional ? ' (fits its regional jets too)' : ''}` : a.carrierRec ? `no maximum; ${inches(a.carrierRec)} soft recommended` : 'no maximum published: under the seat'];
+  }) : [];
+  if (r.refused.length && r.refused.length === ids.length) return { label: `A hard carrier on ${trip}`, value: 'Not accepted', example: 'Example: a soft carrier, Delta out and Alaska back', sub: `${names.join(', ')} take${names.length === 1 ? 's' : ''} only soft carriers in the cabin`, rows, note: READ };
+  const value = r.box ? inches(r.box) : 'No published maximum';
+  return {
+    label: `Largest ${soft ? 'soft' : 'hard'} carrier for ${trip}`, value,
+    example: 'Example: a soft carrier, Delta out and Alaska back',
+    sub: r.refused.length ? `${r.refused.map((id) => AIRLINES[id].name).join(', ')} take${r.refused.length === 1 ? 's' : ''} no hard carrier: switch to soft` : r.box ? `length x width x height, outside, any order${r.maxLb ? `; ${r.maxLb} lb at most with the pet` : ''}` : 'these airlines only ask that it fits under the seat in front',
+    rows,
+    note: `${READ} Each side is the smallest of the airlines’ limits, compared largest side to largest side.`,
+  };
+}
+
+/** Dog carrier: the IATA minimum inside size for a dog, and whether a carrier that size meets each cabin limit. */
+function kennel(v: V): ToolOut {
+  const a = n(v, 'a'), b = n(v, 'b'), c = n(v, 'c'), d = n(v, 'd'), snub = s(v, 'snub') === 'yes', bed = n(v, 'bed');
+  const box = iataContainer(a, b, c, d, 1, snub, bed).map((x) => Math.ceil(x * 2) / 2);
+  const rows = AIRLINE_IDS.map((id) => {
+    const A = AIRLINES[id], m = A.carrier?.soft;
+    return [A.name, m ? (fitsBox(box, m) ? `inside size fits within ${inches(m)}` : `larger than ${inches(m)}`) : A.carrierRec ? `no maximum; ${inches(A.carrierRec)} recommended${fitsBox(box, A.carrierRec) ? ', fits' : ', larger'}` : 'no maximum published'] as [string, string];
+  });
+  const fit = AIRLINE_IDS.filter((id) => { const m = AIRLINES[id].carrier?.soft; return m && fitsBox(box, m); }).map((id) => AIRLINES[id].name);
+  return {
+    label: 'Smallest inside size for this dog (IATA formula)', value: inches(box),
+    example: 'Example: a dog 14 in from nose to tail root, 5 in to the elbow, 5 in at the shoulders, 10 in tall',
+    sub: fit.length ? `a soft carrier this size inside can meet the published cabin limit of ${fit.join(', ')}` : 'no published cabin limit is that large: think cargo-size crate, or an airline that takes pets in the hold',
+    rows: [['Length = A + half of B', inches([box[0]])], ['Width = 2 x C', inches([box[1]])], ['Height = D + bedding', inches([box[2]])], ...rows],
+    note: `IATA Live Animals Regulations, Container Requirement 1, read on iata.org on November 14, 2026${snub ? `; ${IATA.snubPct} % added for a snub-nosed breed` : ''}. It sets inside sizes for crates in the hold; airline cabin limits are outside sizes, so a carrier needs a little more than this.`,
+  };
+}
+
+/** APHIS pet travel: which agency, which papers and which USDA fee, by direction, animal and destination. */
+const AP = (P as unknown as { aphis: { birdsMaxAsPets: number } }).aphis;
+const APHIS_DEST = [{ value: 'canada', label: 'Canada' }, { value: 'mexico', label: 'Mexico' }, { value: 'eu', label: 'European Union country' }, { value: 'uk', label: 'Great Britain' }, { value: 'japan', label: 'Japan' }, { value: 'other', label: 'Another country' }];
+function aphis(v: V): ToolOut {
+  const dir = s(v, 'dir'), sp = s(v, 'species'), d = s(v, 'dest'), pets = Math.max(1, n(v, 'pets'));
+  const destName = d === 'eu' ? 'the European Union' : d === 'other' ? 'another country' : APHIS_DEST.find((o) => o.value === d)?.label ?? d;
+  const example = 'Example: one dog leaving the US for a European Union country';
+  if (sp === 'poultry') return { label: 'APHIS pet travel', value: 'Not a pet for APHIS', example, sub: 'Chickens, ducks, geese, pigeons, quail, turkeys and other poultry follow the APHIS rules for live poultry, not pet travel', rows: [['Pet travel rules', 'do not apply'], ['Where to look', 'APHIS live animal import and export pages']], note: 'APHIS, Travel with a pet, last modified March 20, 2026.' };
+  if (sp === 'bird' && pets > AP.birdsMaxAsPets) return { label: 'APHIS pet travel', value: 'Not pets any more', example, sub: `APHIS treats ${AP.birdsMaxAsPets + 1} or more birds as a shipment, not as pets`, rows: [['Pet travel rules', 'do not apply'], ['Other agency', 'U.S. Fish and Wildlife Service, for some species']], note: 'APHIS, Pet travel from another country to the United States, last modified March 19, 2026.' };
+  if (dir === 'in') {
+    const dog = sp === 'dog';
+    return {
+      label: `${dog ? 'A dog' : sp === 'cat' ? 'A cat' : 'A pet'} entering the United States`, value: dog ? 'CDC first, then APHIS' : 'APHIS and your state',
+      example, sub: dog ? 'CDC is the primary authority for dogs: every dog needs a CDC Dog Import Form receipt' : 'No CDC form: APHIS publishes the import page for this animal, and the destination state may add rules',
+      rows: [['Lead agency', dog ? 'CDC' : 'USDA APHIS'], ['CDC Dog Import Form', dog ? 'needed, no fee listed by CDC' : 'not needed'], ['Other agency', sp === 'bird' || sp === 'other' ? 'U.S. Fish and Wildlife Service, for some species' : 'none named by APHIS'], ['State rules', 'yes: the owner meets federal and state rules']],
+      note: 'APHIS, Pet travel from another country to the United States, last modified March 19, 2026; CDC dog FAQ updated August 27, 2026.',
+    };
+  }
+  const e = ENDORSE[d], endorse = e ? e.endorse : null, tests = e?.tests ?? 0;
+  const catMx = d === 'mexico' && sp !== 'dog';
+  const fee = endorse ? endorsementFee(tests, pets) : 0;
+  return {
+    label: `${sp === 'dog' ? 'Dog' : sp === 'cat' ? 'Cat' : 'Pet'} from the US to ${destName}`,
+    value: endorse === null ? 'Check the APHIS country page' : endorse ? `USDA endorsement: ${usd(fee)}` : catMx ? 'No certificate' : 'No USDA endorsement',
+    example,
+    sub: endorse === null ? 'APHIS keeps one page per country; a USDA-accredited vet reads it with you' : endorse ? `${tests ? `${tests} laboratory test on the certificate, ` : ''}${pets} pet${pets === 1 ? '' : 's'} on one certificate, signed first by a USDA-accredited vet` : catMx ? 'Mexico has asked no health certificate for cats since 2019' : d === 'mexico' ? 'a screwworm inspection certificate signed by a USDA-accredited vet within 5 days of entry' : 'a rabies certificate from a licensed vet is enough',
+    rows: [['First step', 'a USDA-accredited veterinarian, as soon as the trip is decided'], ['Endorsement route', endorse ? 'online (VEHCS, by the vet) or by mail, not both' : 'none'], ['Paper that travels', 'the original signed or endorsed paperwork'], ['Coming back', sp === 'dog' ? 'CDC Dog Import Form receipt' : 'no CDC form for this animal']],
+    note: 'APHIS pet travel process overview and fee schedule, both updated June 18, 2026. No endorsement fee for a service dog under the ADA.',
+  };
+}
+
 type Arg = Record<string, number | string>;
 const SPECS: Record<string, (arg?: Arg) => ToolSpec> = {
   /** Home: fee of one pet in the cabin, every airline side by side. */
@@ -195,6 +269,25 @@ const SPECS: Record<string, (arg?: Arg) => ToolSpec> = {
     { id: 'tests', label: 'Laboratory tests on the certificate', def: 0, max: 20, help: 'A rabies titer is one test; vaccines do not count' },
     { id: 'pets', label: 'Pets on the certificate', def: 1, max: 20 },
   ], arg, endorse),
+  common: (arg = {}) => spec([
+    { kind: 'select', id: 'a1', label: 'Airline out', def: 'delta', options: AIRLINE_OPTIONS },
+    { kind: 'select', id: 'a2', label: 'Airline back or on a connection', def: 'alaska', options: LEG_OPTIONS },
+    { kind: 'choice', id: 'type', label: 'Carrier type', def: 'soft', options: [{ value: 'soft', label: 'Soft-sided' }, { value: 'hard', label: 'Hard-sided' }], wide: true },
+  ], arg, common),
+  kennel: (arg = {}) => spec([
+    { id: 'a', label: 'A: nose to the root of the tail', def: 14, unit: 'in', max: 60, decimals: 1 },
+    { id: 'b', label: 'B: floor to the elbow', def: 5, unit: 'in', max: 30, decimals: 1 },
+    { id: 'c', label: 'C: width at the shoulders', def: 5, unit: 'in', max: 30, decimals: 1 },
+    { id: 'd', label: 'D: standing height, top of head or ears', def: 10, unit: 'in', max: 50, decimals: 1 },
+    { kind: 'choice', id: 'snub', label: 'Snub-nosed breed (pug, bulldog…)', def: 'no', options: [{ value: 'no', label: 'No' }, { value: 'yes', label: 'Yes' }] },
+    { id: 'bed', label: 'Bedding thickness', def: 0, unit: 'in', max: 5, decimals: 1, adv: true, short: 'bedding' },
+  ], arg, kennel),
+  aphis: (arg = {}) => spec([
+    { kind: 'choice', id: 'dir', label: 'Direction', def: 'out', options: [{ value: 'out', label: 'Leaving the US' }, { value: 'in', label: 'Entering the US' }], wide: true },
+    { kind: 'select', id: 'species', label: 'Animal', def: 'dog', options: [{ value: 'dog', label: 'Dog' }, { value: 'cat', label: 'Cat' }, { value: 'bird', label: 'Pet bird' }, { value: 'other', label: 'Ferret, rabbit, rodent, reptile' }, { value: 'poultry', label: 'Chicken, duck or other poultry' }] },
+    { kind: 'select', id: 'dest', label: 'Country you fly to', def: 'eu', options: APHIS_DEST },
+    { id: 'pets', label: 'Animals on the trip', def: 1, max: 20 },
+  ], arg, aphis),
   plan: (arg = {}) => spec([
     { kind: 'select', id: 'dest', label: 'Destination', def: 'eu', options: TL_OPTIONS, wide: true },
     { kind: 'choice', id: 'pet', label: 'Pet', def: 'dog', options: [{ value: 'dog', label: 'Dog' }, { value: 'cat', label: 'Cat' }] },

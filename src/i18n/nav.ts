@@ -21,4 +21,4 @@ export const footerColumns = (lang: Locale): NavCategory[] => [
   { label: 'This site', links: ['home', 'method', 'about', 'contact', 'editorial', 'widget', 'terms', 'privacy', 'cookies'].map((i) => link(i, lang)) },
 ];
 /** Most read pages from the footer: one click from any page (RECETTE §18.2). */
-export const popularLinks = (lang: Locale): NavLink[] => ['airline-pet-policy', 'delta-pet-policy', 'southwest-pet-policy', 'cdc-dog-import-rules', 'how-much-does-it-cost-to-fly-a-dog', 'traveling-to-europe-with-a-dog'].filter((id) => pageById(id)).map((id) => link(id, lang));
+export const popularLinks = (lang: Locale): NavLink[] => ['airline-pet-policy', 'pet-carrier', 'aphis-pet-travel', 'southwest-pet-policy', 'cdc-dog-import-rules', 'how-much-does-it-cost-to-fly-a-dog', 'traveling-to-europe-with-a-dog'].filter((id) => pageById(id)).map((id) => link(id, lang));

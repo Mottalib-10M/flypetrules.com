@@ -36,7 +36,7 @@ describe('content files', () => {
         expect(x.title.length, x.title).toBeGreaterThanOrEqual(50);
         expect(x.title.length, x.title).toBeLessThanOrEqual(60);
         expect(x.title).toMatch(/2026/);
-        expect(x.title).not.toMatch(/^(How|What|When|Why|Is|Are|Do|Does|Can|Calculator|Calculators|United States|US |USA|American)/);
+        expect(x.title).not.toMatch(/^(How|What|When|Why|Is|Are|Do|Does|Can|Calculator|Calculators|United States|US |USA|American)\b/); // \b: « Dog carrier » is not « Do » (2026-11-14)
         expect(titles.get(x.title)).toBe(1);
       });
       it('description 150-160, year, unique', () => {
