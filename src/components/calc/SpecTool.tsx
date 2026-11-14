@@ -77,7 +77,7 @@ export default function SpecTool({ kind, arg, methodHref, idPrefix = 't' }: Prop
         <form className="grid content-start grid-cols-1 gap-x-4 gap-y-3 sm:grid-cols-2" onSubmit={(e) => e.preventDefault()}>
           {spec.profiles && spec.profiles.length > 0 && (
             <div data-profils className="sm:col-span-2">
-              <p className="mb-1 text-sm font-medium text-navy-700">Start from your case</p>
+              <p className="mb-1 text-sm font-medium text-navy-700">Or pick a common trip</p>
               <div className="flex flex-wrap gap-2">
                 {spec.profiles.map((p) => {
                   const on = Object.entries(p.set).every(([k, x]) => String(v[k]) === String(x));

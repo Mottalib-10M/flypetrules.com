@@ -5,7 +5,7 @@ const C = K.CDC;
 
 export default definePage({
   id: 'cdc-dog-import-rules', group: 'usentry', order: 11, slug: 'cdc-dog-import-rules',
-  nav: 'CDC dog import rules', card: 'Bringing a dog into or back to the US: the three CDC cases, the 111 high-risk countries, airports and quarantine.',
+  nav: 'CDC dog import rules', card: 'Bringing a dog into or back to the US: the four CDC cases, the 111 high-risk countries, airports and quarantine.',
   title: 'CDC Dog Import Rules 2026: Bringing a Dog Back to the US',
   description: `CDC dog import rules in 2026: every dog needs the Dog Import Form receipt, a microchip and ${C.minAgeMonths} months of age; extra papers after one of ${K.HR.length} high-risk countries.`,
   h1: 'CDC dog import rules: bringing a dog into the United States',
@@ -19,8 +19,8 @@ export default definePage({
   ],
   body: (h) => `
 <h2>CDC dog import rules for every dog</h2>
-<p>Four conditions apply to all dogs, from any country, by any port (${h.src('cdc_faq', 'CDC FAQ, updated August 27, 2026')}): the dog appears healthy on arrival, it has a microchip, it is at least ${C.minAgeMonths} months old, and it travels with a CDC Dog Import Form receipt. The microchip can be any brand but must be readable by a universal scanner; if the number does not start with 9, the CDC asks you to confirm with a veterinarian that it can be read. For a dog from a high-risk country, an unreadable chip can mean refusal and a return flight at the owner’s cost.</p>
-<h2>The three cases</h2>
+<p>Four conditions apply to all dogs, from any country, by any port (${h.src('cdc_faq', 'CDC FAQ, updated August 27, 2026')}): the dog appears healthy on arrival, it has a microchip, it is at least ${C.minAgeMonths} months old, and it travels with a CDC Dog Import Form receipt, which you get by filling in the form online from the ${h.src('cdc_dogs', 'CDC page on bringing a dog in')}. The microchip can be any brand but must be readable by a universal scanner; if the number does not start with 9, the CDC asks you to confirm with a veterinarian that it can be read. For a dog from a high-risk country, an unreadable chip can mean refusal and a return flight at the owner’s cost.</p>
+<h2>The four cases</h2>
 ${h.table(['The dog in the last 6 months', 'Papers beyond the receipt', 'Where it can enter'], [['Only in the US or low-risk countries', 'none', 'any airport, seaport or land border'], ['In a high-risk country, vaccinated in the US', 'Certification of U.S.-issued Rabies Vaccination, endorsed by USDA before leaving', 'any port named on the receipt'], ['In a high-risk country, vaccinated abroad', 'Certification of Foreign Rabies Vaccination and Microchip, and a facility reservation', `by air, at one of ${C.acf.length} airports`], ['In a high-risk country, not vaccinated', 'entry refused', 'none']], 'CDC rules for dogs entering the United States, November 13, 2026', ['l', 'l', 'l'])}
 <p>The list of high-risk countries is the CDC’s (${h.src('cdc_highrisk', 'list of April 15, 2026')}); a country not on it is not considered high risk. Among destinations Americans often visit, Brazil, Colombia, Peru, the Dominican Republic, Egypt, Morocco, Turkey, India, Thailand, Vietnam, the Philippines and the United Arab Emirates are on it. Mexico, Canada, Costa Rica, Jamaica, the Bahamas, the European Union countries, the United Kingdom, Japan, South Korea and Australia are not.</p>
 <h2>A US dog going to a high-risk country</h2>

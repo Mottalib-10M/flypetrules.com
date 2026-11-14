@@ -120,3 +120,12 @@ p[id$="-help"]:not([role="status"]), [data-fixe], [data-actuellement], [aria-liv
   [aria-live] table tr:has(> td + td) { border-top: 1px solid var(--color-navy-200); padding: .3rem 0; }
   [aria-live] table tr > td + td { flex: 1 1 100%; padding-top: .1rem; text-align: left; font-weight: 600; }
 }
+
+/* Sections repliées (lib/fold.ts, Fold.astro) : le triangle du <summary> tombait sur sa propre ligne au-dessus du
+   titre H2 (testeurs naïfs du 2026-11-14, « ça fait cassé »). Le triangle est dessiné à gauche du titre, sur la même
+   ligne, et tourne quand la section est ouverte. */
+details.fold > summary { list-style: none; display: flex; align-items: baseline; gap: .5rem; cursor: pointer; }
+details.fold > summary::-webkit-details-marker { display: none; }
+details.fold > summary::before { content: "\25B8"; flex: none; font-size: 1.1rem; color: var(--color-accent-700); transition: transform .15s; }
+details.fold[open] > summary::before { transform: rotate(90deg); }
+details.fold > summary > .fold-h { margin-top: 1.25rem; margin-bottom: .75rem; }

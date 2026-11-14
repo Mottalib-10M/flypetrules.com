@@ -11,7 +11,7 @@ export default definePage({
   title: 'Pet Policy of American Airlines 2026: Fee, Carrier, Weight',
   description: `American Airlines pet policy in 2026: ${K.usd(US)} per kennel each way, soft carrier ${K.in(C.soft!)}, ${A.maxLb} lb with the carrier, no cabin pets to Europe or Hawaii.`,
   h1: 'American Airlines pet policy: fee, carrier and routes',
-  intro: 'The American Airlines pet policy as its pets page stated it on November 13, 2026, with the fee of your trip computed above.',
+  intro: 'The American Airlines pet policy as its pets page stated it on November 13, 2026, with the fee for your trip computed below.',
   resume: `The American Airlines pet policy accepts cats and dogs as carry-on pets for ${K.usd(US)} per kennel each way, within and between the United States and Canada, Mexico, Central America and the Caribbean. It is the only one of the five airlines read here with a weight limit: ${A.maxLb} pounds for the pet and its carrier together, weighed at check-in. The carrier has three published maximums: ${K.in(C.soft!)} for a soft carrier on all flights, ${K.in(C.hard!)} for a hard carrier on American mainline flights and ${K.in(C.hardRegional!)} on American Eagle regional flights. With the carrier you may bring one more item, a personal item or a carry-on, not both. Pets must be at least 8 weeks old within the US. American takes no carry-on pet on trans-Atlantic trips, to or from Hawaii, to Jamaica, or to Argentina, Brazil, Chile, Colombia and Uruguay. Checked pets are reserved for active-duty military and State Department staff on official orders.`,
   faqs: [
     { q: 'How much does American charge for a pet in the cabin?', a: `${K.usd(US)} per kennel each way, on routes within and between the US and Canada, Mexico, Central America and the Caribbean. American writes that its fees apply to each destination without a stopover or connection of four hours or more, so a long stopover can add a second fee.`, open: true },
@@ -21,12 +21,12 @@ export default definePage({
   ],
   body: (h) => `
 <h2>American Airlines pet policy in the cabin</h2>
-<p>American’s carry-on pets are cats and dogs only (${h.src('aa_pets', 'American Airlines pets page')}). The pet stays in its carrier, under the seat in front of you, for the whole flight. You add the pet to your trip and pay the carry-on pet fee; space is limited per flight, up to 20 carriers across all cabins on most mainline aircraft, and 1 or 5 on regional jets depending on the type.</p>
+<p>American’s carry-on pets are cats and dogs only (${h.src('aa_pets', 'American Airlines pets page')}). The pet stays in its carrier, under the seat in front of you, for the whole flight. You add the pet to your trip and pay the carry-on pet fee; space is limited per flight, up to 20 carriers across all cabins on most mainline aircraft, and on regional jets 1 or 5 depending on the aircraft type, which the booking screen shows.</p>
 <p>American does not accept a pet that has been sedated or tranquilized, following the American Veterinary Medical Association, as it writes on the same page.</p>
 ${h.table(['Carrier', 'Flights', 'Maximum'], [['Soft-sided (recommended)', 'all flights', K.in(C.soft!)], ['Hard-sided', 'American mainline', K.in(C.hard!)], ['Hard-sided', 'American Eagle (regional)', K.in(C.hardRegional!)], ['Pet and carrier together', 'all flights', `${A.maxLb} lb`]], 'American Airlines carry-on pet carrier limits, read November 13, 2026', ['l', 'l', 'r'])}
 <h2>Carrier size and weight on American</h2>
 <p>The soft size is the safe one, since it fits every American flight; a hard carrier must match the smaller Eagle size if any leg is regional. The weight counts the carrier too: a 4-pound carrier leaves 16 pounds for the pet. The checker below tests both size and weight.</p>
-${h.mini('carrier', { t: 'Does your carrier pass American’s limits?', p: ['lb', 'type'] })}
+${h.mini('carrier', { t: 'Does your carrier pass American’s limits?', p: ['l', 'w', 'h', 'lb', 'type'] })}
 <p>A pet stroller is not a carrier: American checks it at the counter as a bag, with its usual bag fee.</p>
 <h2>Routes and destinations</h2>
 <p>The carry-on fee covers trips within the US and to Canada, Mexico, Central America and the Caribbean, with exceptions. American takes no carry-on pet to or from Hawaii; there, only checked pets on official orders, connecting through Honolulu. It refuses carry-on pets to Jamaica and on trips to or from Argentina, Brazil, Chile, Colombia and Uruguay. To Trinidad and Tobago, a flight with a pet must land between 8 a.m. and 4 p.m. Across the Atlantic, no carry-on pets at all.</p>

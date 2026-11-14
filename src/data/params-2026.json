@@ -442,7 +442,7 @@
    ],
    "oldFee": 95,
    "feeDate": "2025-04-08",
-   "species": "small dogs, cats and household birds (birds within the contiguous US)",
+   "species": "small dogs, cats and household birds (birds only within the lower 48 states)",
    "minWeeks": 8,
    "carrier": null,
    "carrierRec": [
@@ -451,7 +451,7 @@
     11
    ],
    "maxLb": null,
-   "perPassenger": "1 kennel",
+   "perPassenger": "1 carrier",
    "perFlight": "2 in Delta First, 4 in Comfort and Main",
    "noCabinTo": [
     "Australia",

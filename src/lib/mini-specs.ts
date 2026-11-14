@@ -26,8 +26,9 @@ function adapt(kind: string): MiniSpec {
     title: '', cta: 'Open the full calculator', inputs,
     exemple: (v) => t.run(back(v)).example ?? '',
     run: (v) => {
+      // Five rows, not four: the carrier checker lists the five airlines (naive testers of 2026-11-14: Frontier was cut off).
       const o = t.run(back(v));
-      return { head: [o.label, o.value], alert: o.sub, rows: o.rows.slice(0, 4).map(([l, x]) => [l, x] as [string, string]) };
+      return { head: [o.label, o.value], alert: o.sub, rows: o.rows.slice(0, 5).map(([l, x]) => [l, x] as [string, string]) };
     },
   };
 }

@@ -1,0 +1,9 @@
+01 / → /en/
+02 menu ☰ ouvert (rubriques dépliées)
+03 /en/about/
+04 /en/airline-pet-policy/
+05 /en/alaska-airlines-pet-policy/
+06 /en/american-airlines-pet-policy/
+07 /en/aphis-pet-travel/
+08 /en/cdc-dog-import-form/
+09 /en/cdc-dog-import-rules/

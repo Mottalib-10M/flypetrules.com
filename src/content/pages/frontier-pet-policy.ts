@@ -24,7 +24,7 @@ export default definePage({
 ${h.table(['Rule', 'Frontier'], [['Pet charge', `${K.usd(US)} per pet each way`], ['Soft carrier', K.in(C.soft!)], ['Hard carrier', K.in(C.hard!)], ['Pets per passenger', '1'], ['Routes', 'within the US only'], ['Cargo or checked', 'never']], 'Frontier pet rules, read November 13, 2026', ['l', 'l'])}
 <h2>The carrier on Frontier</h2>
 <p>Frontier’s maximums are the roomiest of the five airlines on width: 14 inches, against 11 on Delta’s recommended size and on American’s soft carrier. The height is 11 inches soft and 8 hard. The pet must be able to stand, turn around and lie down naturally inside.</p>
-${h.mini('carrier', { t: 'Does your carrier fit Frontier’s sizes?', p: ['l', 'w', 'h'], d: { l: 18, w: 14, h: 11 } })}
+${h.mini('carrier', { t: 'Does your carrier fit Frontier’s sizes?', p: ['l', 'w', 'h', 'lb', 'type'], d: { l: 18, w: 14, h: 11 } })}
 <p>The pet does not use your bag allowance: you keep a personal item or a carry-on, paying Frontier’s usual bag fees for the carry-on.</p>
 <h2>Booking and paying on Frontier</h2>
 <p>Add the pet while booking, in the passenger information step, or afterwards in Manage Trip. The charge is ${K.usd(US)} per pet and per direction (${h.src('f9_fees', 'Frontier optional services')}), non-refundable. Frontier’s fee page also lists a carrier interface charge per passenger and flight segment, separate from the pet.</p>

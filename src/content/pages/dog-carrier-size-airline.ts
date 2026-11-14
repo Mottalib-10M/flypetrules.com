@@ -5,7 +5,7 @@ const AA = K.A('american'), AS = K.A('alaska'), F9 = K.A('frontier'), DL = K.A('
 
 export default definePage({
   id: 'dog-carrier-size-airline', group: 'airlines', order: 7, slug: 'dog-carrier-size-airline',
-  nav: 'Dog carrier size by airline', card: 'Enter your carrier’s three sides and weight: which airlines’ published limits it meets.',
+  nav: 'Dog carrier size by airline: does yours fit?', card: 'Enter your carrier’s three sides and weight: which airlines’ published limits it meets.',
   title: 'Airline Dog Carrier Size 2026: Will Your Carrier Fit Here?',
   description: `Dog carrier size by airline in 2026: the limits of Delta, American, Southwest, Alaska and Frontier, soft and hard, the ${AA.maxLb} lb weight rule, checked in one click.`,
   h1: 'Dog carrier size by airline: will yours fit under the seat?',
@@ -30,7 +30,7 @@ ${h.table(['Airline', 'Soft carrier', 'Hard carrier', 'Weight'], [
 <h2>How to measure a carrier</h2>
 <p>Measure the outside of the carrier, not the inside, with any pockets, frames and wheels included, and measure the height with the top zipped as it will travel. A soft carrier with a sagging top is still measured at its full height. Then weigh yourself holding the carrier with the pet inside and subtract your own weight: that is the figure American checks.</p>
 <p>The height is where most carriers fail. Alaska allows 9.5 inches and Frontier’s hard carrier 8, against 11 on most soft limits. A dog that needs 11 inches to stand cannot fly with Alaska in the cabin.</p>
-${h.mini('carrier', { t: 'Test a hard carrier', p: ['type', 'h'], d: { type: 'hard', l: 18, w: 13, h: 9 } })}
+${h.mini('carrier', { t: 'Test a hard carrier', p: ['l', 'w', 'h', 'lb', 'type'], d: { type: 'hard', l: 18, w: 13, h: 9 } })}
 <h2>The room your pet needs inside</h2>
 <p>Delta, Southwest and Frontier write the same rule in their own words: the pet must be able to move around, stand, turn and lie down naturally inside. Delta adds that it must not touch or stick out from the sides, and Alaska that no body part may protrude. A carrier within the size limit but too small for the pet is refused like an oversized one. Size the carrier on the pet first, then check it against the airline.</p>
 <h2>What the limit does not tell you</h2>
