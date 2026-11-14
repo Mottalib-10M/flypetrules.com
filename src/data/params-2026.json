@@ -624,10 +624,9 @@
   }
  },
  "notRead": [
-  "United Airlines (united.com did not answer our requests)",
-  "JetBlue (jetblue.com refused automated reading)",
-  "Allegiant (allegiantair.com refused automated reading)",
-  "Hawaiian Airlines (pages now on alaskaair.com, rendered by script)"
+  {"name": "United", "url": "https://www.united.com/", "page": "official site"},
+  {"name": "JetBlue", "url": "https://www.jetblue.com/traveling-together/traveling-with-pets", "page": "pet page"},
+  {"name": "Allegiant", "url": "https://www.allegiantair.com/traveling-with-pets", "page": "pet page"}
  ],
  "iata": {
   "_note": "IATA Live Animals Regulations, Container Requirement 1, as published on iata.org (read 2026-11-14): length = A + B/2, width = C x 2 (x3 for two animals, x4 for three), height = D plus bedding, 10 % larger for snub-nosed breeds. Internal dimensions.",

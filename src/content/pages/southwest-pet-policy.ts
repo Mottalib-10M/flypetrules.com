@@ -26,7 +26,7 @@ ${h.table(['Rule', 'Southwest'], [['Pet fare, mainland', `${K.usd(US)} per carri
 <h2>The carrier on Southwest</h2>
 <p>Southwest’s contract gives no dimensions: the carrier must be leak-proof, ventilated, roomy enough for the pet to stand up and move around with ease, and small enough to fit under the seat in front of you. Southwest sells its own carrier at the ticket counter for $58 on the fee page we read.  Under-seat space is fixed by the seat in front, so a soft carrier that gives a little is easier to slide in.</p>
 ${h.mini('carrier', { t: 'Will your carrier fit on Southwest?', p: ['air', 'l', 'w', 'h', 'lb', 'type'], d: { air: 'southwest' } })}
-<p>Because Southwest publishes no maximum, the checker marks it “no size published”: measure the carrier against the limits of the other airlines as a guide, then ask Southwest.</p>
+<p>Because Southwest publishes no maximum, the checker marks it “Fits if it slides under the seat”: measure the carrier against the limits of the other airlines as a guide, then ask Southwest.</p>
 <h2>Booking a pet on Southwest</h2>
 <p>Pets are booked by phone only. Southwest may limit a flight to six carriers and accepts pets first come first served, so book the pet as soon as you hold your own ticket. On the day, check the pet in at the ticket counter and pay the fare there before going through security (${h.src('wn_fees', 'Southwest fee page')}). The fee page states the fare one way, per carrier.</p>
 ${h.mini('fee', { t: 'Southwest fare for your trip', p: ['region', 'legs'], d: { airline: 'southwest' } })}

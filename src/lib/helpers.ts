@@ -27,6 +27,8 @@ export function link(id: string, text: string) {
 export const box = (title: string, html: string) => `<aside class="boxnote not-prose"><p class="boxnote-title">${title}</p><div class="text-navy-800">${html}</div></aside>`;
 export const mini = (kind: string, arg?: MiniOpts) => `<!--mini:${kind}${arg === undefined ? '' : `|${Buffer.from(JSON.stringify(arg)).toString('base64')}`}-->`;
 export const src = (key: string, text?: string) => { const s = SOURCES[key]; if (!s) throw new Error(`Unknown source ${key}`); return ext(s.url, text ?? s.label); };
+/** Plain sentence for United, JetBlue and Allegiant, with a link to each one's own page (naive testers, round 4). */
+export const others = () => `We could not read the pet rules of United, JetBlue and Allegiant, so we give no figure for them. See them on their own sites: ${KIT.NOT_READ.map((x) => ext(x.url, `${x.name} ${x.page}`)).join(', ')}.`;
 export function helpers(): Helpers {
-  return { ...KIT, a: link, table, src, ext, box, mini };
+  return { ...KIT, a: link, table, src, ext, box, mini, others };
 }

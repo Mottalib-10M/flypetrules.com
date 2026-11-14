@@ -29,6 +29,7 @@ const sources = page.sources.map((k) => ({ name: SOURCES[k].label, url: SOURCES[
     <header class="mb-4">
       <h1 class="font-serif text-[1.75rem] font-bold text-navy-900 max-sm:leading-tight sm:text-3xl md:text-4xl">{page.h1}</h1>
       <p class="mt-2 text-base text-navy-700 sm:text-lg">{page.intro}</p>
+      {page.cta && <p class="mt-3"><a href={page.cta.href} target="_blank" rel="nofollow noopener noreferrer" class="inline-flex min-h-11 items-center gap-2 rounded-lg bg-accent-700 px-4 py-2 text-base font-semibold text-white hover:bg-accent-800">{page.cta.label} <span aria-hidden="true">↗</span></a>{page.cta.note && <span class="mt-1 block text-sm text-navy-600">{page.cta.note}</span>}</p>}
       {page.jump && <p class="mt-2 text-base font-medium"><a href={page.jump.href} class="text-accent-700 underline underline-offset-2">{page.jump.label} ↓</a></p>}
     </header>
     <div id="calculator" data-outil data-chrome class="mb-4 scroll-mt-20"><Tool kind={page.tool} arg={page.toolArg} idPrefix={`p${page.order}`} /></div>

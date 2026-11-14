@@ -27,7 +27,8 @@ export interface Airline {
 }
 export const AIRLINES = P.airlines as unknown as Record<string, Airline>;
 export const AIRLINE_IDS = Object.keys(AIRLINES);
-export const NOT_READ = P.notRead as string[];
+/** United, JetBlue, Allegiant: rules we could not read, linked to their own page (United: home page, its pet page address unconfirmed). */
+export const NOT_READ = P.notRead as Array<{ name: string; url: string; page: string }>;
 
 export type CabinStatus = { status: 'yes'; fee: number } | { status: 'no' } | { status: 'unknown' };
 /** In-cabin fee for one pet, one way, on one airline and one kind of route. */
@@ -89,7 +90,7 @@ export function timeline(dest: Dest, dog: boolean, vaxOk: boolean): { steps: Ste
   const E = DEST.eu, U = DEST.uk, J = DEST.japan, T = DEST.tapeworm;
   if (dest === 'mexico') {
     if (!dog) return { steps: [{ label: 'No health certificate for a cat since 2019; inspection on arrival', day: null }], minDays: 0 };
-    return { steps: [{ label: 'NWS (screwworm) inspection certificate signed by a USDA-accredited vet', day: DEST.mexico.nwsDays, note: `no earlier than ${DEST.mexico.nwsDays} days before entry` }, { label: 'Inspection by SENASICA on arrival', day: 0 }], minDays: 0 };
+    return { steps: [{ label: 'NWS (screwworm) inspection certificate signed by a USDA-approved vet', day: DEST.mexico.nwsDays, note: `no earlier than ${DEST.mexico.nwsDays} days before entry` }, { label: 'Inspection by SENASICA on arrival', day: 0 }], minDays: 0 };
   }
   if (dest === 'canada') return { steps: [{ label: `Rabies certificate from a licensed vet, vaccine given within ${DEST.canada.rabiesYears} years`, day: null, note: `not needed under ${DEST.canada.noVaxUnderMonths} months of age, proof of age instead` }], minDays: 0 };
   if (dest === 'japan') {
@@ -98,15 +99,15 @@ export function timeline(dest: Dest, dog: boolean, vaxOk: boolean): { steps: Ste
       { label: 'ISO microchip, then two rabies vaccines more than 30 days apart', day: vaxOk ? null : wait, note: `first vaccine at ${J.firstVaxDays} days of age or older` },
       { label: `Blood sample for the titer test (at least ${J.titer} IU/ml, approved lab)`, day: J.waitDays, note: `${J.waitDays} days at least before arrival` },
       { label: 'Advance notice to Japan’s Animal Quarantine Service', day: J.notifyDays, note: `${J.notifyDays} days at least before arrival` },
-      { label: 'Exam by a USDA-accredited vet, Form AC, APHIS endorsement', day: 2, note: 'shortly before departure' },
+      { label: 'Exam by a USDA-approved vet, Form AC, APHIS endorsement', day: 2, note: 'shortly before departure' },
     ], minDays: wait };
   }
   const R = dest === 'uk' ? U : E;
   const steps: Step[] = [];
   if (!vaxOk) steps.push({ label: 'ISO microchip, then the rabies vaccine (chip first)', day: R.waitDays, note: `wait ${R.waitDays} days after a first vaccine${dest === 'uk' ? `; pet at least ${U.minVaxWeeks} weeks old when vaccinated` : ''}` });
-  steps.push({ label: 'Health certificate by a USDA-accredited vet', day: R.endorseWithinDays, note: `valid ${R.certValidDays} days from signature` });
+  steps.push({ label: 'Health certificate by a USDA-approved vet', day: R.endorseWithinDays, note: `valid ${R.certValidDays} days from signature` });
   steps.push({ label: 'USDA APHIS endorsement of the certificate', day: R.endorseWithinDays, note: `within ${R.endorseWithinDays} days before arrival` });
-  if (dog && (dest === 'uk' || dest === 'tapeworm')) steps.push({ label: dest === 'uk' ? 'Tapeworm dose given and recorded by a USDA-accredited vet' : 'Tapeworm dose given and recorded by a vet (APHIS names both a USDA-accredited and an EU vet)', day: dest === 'uk' ? U.tapeMaxH / 24 : T.maxDays, note: `${dest === 'uk' ? `${U.tapeMinH} to ${U.tapeMaxH} hours` : `${T.minDays} to ${T.maxDays} days`} before arrival` });
+  if (dog && (dest === 'uk' || dest === 'tapeworm')) steps.push({ label: dest === 'uk' ? 'Tapeworm dose given and recorded by a USDA-approved vet' : 'Tapeworm dose given and recorded by a vet (APHIS names both a USDA-accredited and an EU vet)', day: dest === 'uk' ? U.tapeMaxH / 24 : T.maxDays, note: `${dest === 'uk' ? `${U.tapeMinH} to ${U.tapeMaxH} hours` : `${T.minDays} to ${T.maxDays} days`} before arrival` });
   return { steps, minDays: vaxOk ? 0 : R.waitDays };
 }
 

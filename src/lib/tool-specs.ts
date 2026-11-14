@@ -79,12 +79,12 @@ function carrier(v: V): ToolOut {
    * accepted, and names those that refuse it; tests/carrier-count.test.ts checks headline = accepted lines.
    */
   const accepted = (x: typeof res[number]) => x.verdict === 'fits' || x.verdict === 'no limit published';
-  const word: Record<string, string> = { fits: 'Fits: within its published limit', 'too big': 'No: too big', 'too heavy': 'No: too heavy', 'no limit published': 'Fits if it slides under the seat: no maximum published', 'soft only': 'No: soft carriers only' };
+  const word: Record<string, string> = { fits: 'Fits: within its published limit', 'too big': 'No: too big', 'too heavy': 'No: too heavy', 'no limit published': 'Fits if it slides under the seat: this airline gives no size, only that rule', 'soft only': 'No: soft carriers only' };
   /** Delta publishes no maximum but recommends a size: say whether the carrier fits the recommendation. */
   const verdict = (x: typeof res[number]) => {
     const rec = AIRLINES[x.id].carrierRec;
     if (x.verdict !== 'no limit published' || !rec || !soft) return word[x.verdict];
-    return fitsBox(dims, rec) ? `Fits: no maximum, and within the ${inches(rec)} it recommends` : `Fits if it slides under the seat: no maximum, but larger than the ${inches(rec)} it recommends`;
+    return fitsBox(dims, rec) ? `Fits: no hard limit set, and within the ${inches(rec)} it recommends` : `Fits if it slides under the seat: no hard limit set, but larger than the ${inches(rec)} it recommends`;
   };
   const why: Record<string, string> = { 'too big': 'too big', 'too heavy': 'too heavy', 'soft only': 'soft carriers only' };
   const ok = res.filter(accepted), no = res.filter((x) => !accepted(x));
@@ -93,7 +93,7 @@ function carrier(v: V): ToolOut {
   const total = AIRLINE_IDS.length;
   const count = ok.length === total ? `Fits on all ${total} airlines` : ok.length === 0 ? `Fits on none of the ${total} airlines` : `Fits on ${ok.length} of ${total} airlines`;
   const refusedTxt = no.length ? `${no.map((x) => `${why[x.verdict]} for ${AIRLINES[x.id].name}`).join('; ')}${no.length === 1 ? ' only' : ''}` : '';
-  const detail = [sure.length ? `${list(sure)}: within the published or recommended size` : '', open.length ? `${list(open)}: no maximum published, it must slide under the seat` : ''].filter(Boolean).join('; ');
+  const detail = [sure.length ? `${list(sure)}: within the published or recommended size` : '', open.length ? `${list(open)}: no size given, it must slide under the seat` : ''].filter(Boolean).join('; ');
   const sub = [refusedTxt, detail].filter(Boolean).join('. ').replace(/^./, (c) => c.toUpperCase());
   const lbTxt = formatNumber(lb, Number.isInteger(lb) ? 0 : 1);
   const desc = `A ${soft ? 'soft' : 'hard'} carrier of ${inches(dims)}, ${lbTxt} lb`;
@@ -201,7 +201,7 @@ function plan(v: V): ToolOut {
     example: `Example: a ${dog ? 'dog' : 'cat'} going to ${name}, flight in ${plural(days, 'day')}, rabies vaccine ${vaxOk ? 'already valid' : 'not yet given'}`,
     sub: late ? `the shortest lead time is ${formatNumber(t.minDays, 0)} days from the first step` : `${formatNumber(days, 0)} days before your flight`,
     rows: t.steps.map((x) => [x.label, x.day === null ? (x.note ?? 'any time before') : `${x.day === 0 ? 'on arrival' : `last ${formatNumber(x.day, 0)} days`}${x.note ? ` · ${x.note}` : ''}`] as [string, string]),
-    note: 'Formalities read on the USDA APHIS page of each destination. Rules change: your USDA-accredited veterinarian checks them again before signing.',
+    note: 'Formalities read on the USDA APHIS page of each destination. Rules change: your USDA-approved vet checks them again before signing.',
   };
 }
 
@@ -236,7 +236,7 @@ function kennel(v: V): ToolOut {
   const box = iataContainer(a, b, c, d, 1, snub, bed).map((x) => Math.ceil(x * 2) / 2);
   const rows = AIRLINE_IDS.map((id) => {
     const A = AIRLINES[id], m = A.carrier?.soft;
-    return [A.name, m ? (fitsBox(box, m) ? `inside size fits within ${inches(m)}` : `larger than ${inches(m)}`) : A.carrierRec ? `no maximum; ${inches(A.carrierRec)} recommended${fitsBox(box, A.carrierRec) ? ', fits' : ', larger'}` : 'no maximum published'] as [string, string];
+    return [A.name, m ? (fitsBox(box, m) ? `inside size fits within ${inches(m)}` : `larger than ${inches(m)}`) : A.carrierRec ? `no hard limit; ${inches(A.carrierRec)} recommended${fitsBox(box, A.carrierRec) ? ', fits' : ', larger'}` : 'no maximum published'] as [string, string];
   });
   const fit = AIRLINE_IDS.filter((id) => { const m = AIRLINES[id].carrier?.soft; return m && fitsBox(box, m); }).map((id) => AIRLINES[id].name);
   return {
@@ -275,7 +275,7 @@ function aphis(v: V): ToolOut {
     label: `${sp === 'dog' ? 'Dog' : sp === 'cat' ? 'Cat' : 'Pet'} from the US to ${destName}`,
     value: endorse === null ? 'Check the APHIS country page' : endorse ? `USDA stamp: ${usd(fee)}` : catMx ? 'No certificate' : 'No USDA endorsement',
     example,
-    sub: endorse === null ? 'APHIS keeps one page per country; a USDA-accredited vet reads it with you' : endorse ? `the USDA fee to stamp (“endorse”) the health certificate your vet signs${tests ? `, with ${tests} laboratory test on it` : ''}; the vet’s own bill comes on top` : catMx ? 'Mexico has asked no health certificate for cats since 2019' : d === 'mexico' ? 'a screwworm inspection certificate signed by a USDA-accredited vet within 5 days of entry' : 'a rabies certificate from a licensed vet is enough',
+    sub: endorse === null ? 'APHIS keeps one page per country; a vet approved by USDA for travel papers reads it with you' : endorse ? `the USDA fee to stamp (“endorse”) the health certificate your vet signs${tests ? `, with ${tests} laboratory test on it` : ''}; the vet’s own bill comes on top` : catMx ? 'Mexico has asked no health certificate for cats since 2019' : d === 'mexico' ? 'a screwworm inspection certificate signed by a USDA-approved vet within 5 days of entry' : 'a rabies certificate from a licensed vet is enough',
     rows: [['First step', 'a USDA-accredited veterinarian, as soon as the trip is decided'], ['How USDA stamps it', endorse ? 'your vet sends it to USDA online, or you mail it; not both' : 'no USDA stamp needed'], ['Paper that travels', 'the original signed or endorsed paperwork'], ['Coming back', sp === 'dog' ? 'CDC Dog Import Form receipt' : 'no CDC form for this animal']],
     note: 'APHIS pet travel process overview and fee schedule, both updated June 18, 2026. No USDA fee for a service dog under the ADA (Americans with Disabilities Act).',
   };
@@ -310,7 +310,7 @@ const SPECS: Record<string, (arg?: Arg) => ToolSpec> = {
   ], arg, cdc),
   form: (arg = {}) => spec([
     { kind: 'choice', id: 'risk', label: 'Country the dog comes from', def: 'low', options: [{ value: 'low', label: 'Low-risk' }, { value: 'high', label: 'High-risk' }], help: 'Risk of dog rabies, by the CDC list: Canada, Mexico and the EU are low-risk; Brazil, Dominican Republic, Turkey are high-risk' },
-    { id: 'months', label: 'Months since the receipt was issued', def: 2, unit: 'months', max: 24 },
+    { id: 'months', label: 'Already have a receipt? Months since it was issued', def: 2, unit: 'months', max: 24 },
   ], arg, form),
   endorse: (arg = {}) => spec([
     { id: 'tests', label: 'Laboratory tests on the certificate', def: 0, max: 20, help: 'A rabies titer is one test; vaccines do not count' },

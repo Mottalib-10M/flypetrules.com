@@ -27,6 +27,7 @@ const doors = [
   { label: 'Bringing my dog back to the US', href: route('cdc-dog-import-rules', lang) },
   { label: 'Taking my dog to Europe', href: route('traveling-to-europe-with-a-dog', lang) },
   { label: 'Total cost of flying my dog', href: route('how-much-does-it-cost-to-fly-a-dog', lang) },
+  { label: 'Flying with my cat', href: route('flying-with-a-cat', lang) },
 ];
 ---
 <PageLayout title={x.title} description={x.description} lang={lang} jsonLd={jsonLd} faqs={x.faqs} sources={sources} faqOuverte={0}>
@@ -37,8 +38,8 @@ const doors = [
   </header>
   {/* Doors by profile (brief of 2026-11-10, rule 2): the question a reader comes with, before the form. */}
   <nav data-chrome data-profils aria-label="Start from your question" class="mb-3">
-    <p class="mb-1.5 text-base font-semibold text-navy-900">Start from your question</p>
-    <ul class="grid gap-2 sm:grid-cols-2">
+    <p class="mb-1.5 text-base font-semibold text-navy-900 max-sm:sr-only">Start from your question</p>
+    <ul class="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
       {doors.map((d) => <li><a href={d.href} class="flex min-h-11 items-center justify-between gap-3 rounded-lg border border-navy-300 bg-white px-4 py-1.5 text-[0.95rem] leading-snug font-medium text-accent-700 hover:bg-navy-50"><span>{d.label}</span><span aria-hidden="true">→</span></a></li>)}
     </ul>
   </nav>

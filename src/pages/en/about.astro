@@ -5,6 +5,7 @@ import { route } from '../../i18n/routes';
 import { AUTHOR_NAME, AUTHOR_DESC, CONTACT_EMAIL } from '../../data/site-config';
 import { VALUE } from '../../content/home';
 import { KIT as K } from '../../lib/kit';
+import { others } from '../../lib/helpers';
 import { profilePageSchema, breadcrumbSchema } from '../../lib/seo';
 const lang = 'en';
 const path = route('about', lang);
@@ -24,7 +25,8 @@ const description = 'Fly Pet Rules in 2026: who publishes these pet travel calcu
     <h2>What it relies on</h2>
     <p>The CDC dog import rules and its list of {K.HR.length} high-risk countries; the USDA APHIS pages for Mexico, Canada, France and the European Union, Great Britain, Japan and the tapeworm countries, with the APHIS endorsement fee schedule; and the pet pages or contracts of carriage of Delta, American, Southwest, Alaska and Frontier. Everything was read on {K.day(K.P.retrieved_at)}.</p>
     <h2>What it leaves out</h2>
-    <p>Airlines whose sites refused our reading: {K.NOT_READ.join('; ')}. Veterinary advice of any kind, vet prices, pet shipper quotes and the entry rules of Hawaii, which the state sets itself. The <a href={route('method', lang)}>method page</a> lists every simplification and the <a href={route('editorial', lang)}>editorial policy</a> explains corrections.</p>
+    <p set:html={others()} />
+    <p>Hawaiian Airlines, whose pet pages now sit on Alaska’s site, is not covered either. Veterinary advice of any kind, vet prices, pet shipper quotes and the entry rules of Hawaii, which the state sets itself. The <a href={route('method', lang)}>method page</a> lists every simplification and the <a href={route('editorial', lang)}>editorial policy</a> explains corrections.</p>
     <h2>Contact</h2>
     <p><a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>, for a fee that changed or a rule we read wrong. We answer questions about a figure or a source, not about your own trip, which your airline and your accredited veterinarian decide.</p>
   </article>

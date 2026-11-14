@@ -20,6 +20,8 @@ export interface Helpers extends Kit {
   box: (title: string, html: string) => string;
   /** Inline mini-simulator built on a calculator of tool-specs.ts: `${h.mini('rank', { t, p: ['code'], d: { code: '8810' } })}`. */
   mini: (kind: string, opts?: MiniOpts) => string;
+  /** Sentence + links for the airlines not covered (United, JetBlue, Allegiant). */
+  others: () => string;
 }
 
 /** airlines: fees and carriers; usentry: dogs entering the US; abroad: certificates and destinations. */
@@ -37,6 +39,8 @@ export interface PageDef {
   h1: string; intro: string;
   /** Link right under the intro to a case lower on the page. */
   jump?: { href: string; label: string };
+  /** Button above the calculator to the official site where the reader acts (CDC form, naive testers round 4). */
+  cta?: { href: string; label: string; note?: string };
   /** ONE paragraph of 120 words or more: the direct answer with the figures (RECETTE §21). */
   resume: string;
   faqs: FAQ[];

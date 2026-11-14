@@ -18,7 +18,7 @@ export default definePage({
   ],
   body: (h) => `
 <h2>Flying with a cat on US airlines</h2>
-<p>All five airlines read here take cats in the cabin, under the same conditions as small dogs: a carrier under the seat in front, the cat inside it for the whole flight, a fee each way, a booking made early because pets per flight are limited. Southwest asks that cats be vaccinated, and Delta, American, Southwest and Frontier set a minimum age of 8 weeks within the US.</p>
+<p>All five airlines we checked take cats in the cabin, under the same conditions as small dogs: a carrier under the seat in front, the cat inside it for the whole flight, a fee each way, a booking made early because pets per flight are limited. Southwest asks that cats be vaccinated, and Delta, American, Southwest and Frontier set a minimum age of 8 weeks within the US.</p>
 ${h.table(['Airline', 'Fee each way, within the US', 'Two cats in one carrier'], [['Alaska', K.usd(as), 'yes, one fee'], ['Southwest', K.usd(wn), 'yes, one fee'], ['Frontier', K.usd(K.feeOr('frontier', 'us')), 'no, one adult cat per container'], ['Delta', K.usd(dl), 'only two young pets, 8 weeks to 6 months'], ['American', K.usd(K.feeOr('american', 'us')), 'not stated']], 'Cats in the cabin, read November 13, 2026', ['l', 'r', 'l'])}
 ${h.mini('fee', { t: 'Fee for your cat', p: ['airline', 'legs'], d: { airline: 'southwest' } })}
 <h2>Short-nosed cats</h2>
