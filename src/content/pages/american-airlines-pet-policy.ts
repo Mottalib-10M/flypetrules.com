@@ -26,7 +26,7 @@ export default definePage({
 ${h.table(['Carrier', 'Flights', 'Maximum'], [['Soft-sided (recommended)', 'all flights', K.in(C.soft!)], ['Hard-sided', 'American mainline', K.in(C.hard!)], ['Hard-sided', 'American Eagle (regional)', K.in(C.hardRegional!)], ['Pet and carrier together', 'all flights', `${A.maxLb} lb`]], 'American Airlines carry-on pet carrier limits, read November 13, 2026', ['l', 'l', 'r'])}
 <h2>Carrier size and weight on American</h2>
 <p>The soft size is the safe one, since it fits every American flight; a hard carrier must match the smaller Eagle size if any leg is regional. The weight counts the carrier too: a 4-pound carrier leaves 16 pounds for the pet. The checker below tests both size and weight.</p>
-${h.mini('carrier', { t: 'Does your carrier pass American’s limits?', p: ['l', 'w', 'h', 'lb', 'type'] })}
+${h.mini('carrier', { t: 'Does your carrier pass American’s limits?', p: ['air', 'l', 'w', 'h', 'lb', 'type'], d: { air: 'american' } })}
 <p>A pet stroller is not a carrier: American checks it at the counter as a bag, with its usual bag fee.</p>
 <h2>Routes and destinations</h2>
 <p>The carry-on fee covers trips within the US and to Canada, Mexico, Central America and the Caribbean, with exceptions. American takes no carry-on pet to or from Hawaii; there, only checked pets on official orders, connecting through Honolulu. It refuses carry-on pets to Jamaica and on trips to or from Argentina, Brazil, Chile, Colombia and Uruguay. To Trinidad and Tobago, a flight with a pet must land between 8 a.m. and 4 p.m. Across the Atlantic, no carry-on pets at all.</p>

@@ -8,7 +8,7 @@ const HARD2 = commonCarrier(['american', 'frontier'], false).box!;
 
 export default definePage({
   id: 'pet-carrier', group: 'airlines', order: 0, slug: 'pet-carrier',
-  nav: 'Pet carrier: one size for two airlines', card: 'Pick the airlines of your trip: the largest pet carrier that every one of them accepts in the cabin.',
+  nav: 'One carrier for two airlines', card: 'Pick the airlines of your trip: the largest pet carrier that every one of them accepts in the cabin.',
   title: 'Pet Carrier 2026: The Airline-Approved Size for Every Leg',
   description: `Pet carrier sizes approved by Delta, American, Southwest, Alaska and Frontier in 2026: the largest soft or hard carrier that every airline of your trip accepts.`,
   h1: 'Pet carrier: the airline-approved size for every leg of your trip',

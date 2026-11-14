@@ -5,7 +5,7 @@ const F = K.F;
 
 export default definePage({
   id: 'pet-health-certificate', group: 'abroad', order: 13, slug: 'pet-health-certificate',
-  nav: 'Pet health certificate and USDA endorsement', card: 'Who signs an international health certificate, when USDA must endorse it, online or by mail, and the fee.',
+  nav: 'Pet health certificate: what your vet signs', card: 'Who signs an international health certificate, when USDA must endorse it, online or by mail, and the fee.',
   title: 'Pet Health Certificate 2026: USDA Endorsement and Its Fees',
   description: `Pet health certificate in 2026: signed by a USDA-accredited vet, endorsed by USDA APHIS for ${K.usd(F.none)} without lab test or ${K.usd(F.t1_2)} with one, and when it is needed.`,
   h1: 'Pet health certificate for international travel and USDA endorsement',

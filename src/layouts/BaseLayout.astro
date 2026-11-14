@@ -140,6 +140,8 @@ const crumbAside = Astro.slots.has('crumb-aside') ? (await Astro.slots.render('c
       </div>
       <div id="mobile-menu" class="hidden max-h-[calc(100vh-4rem)] overflow-y-auto border-t border-navy-200 bg-white px-4 pb-4 lg:hidden">
         {/* Three sections only: all open (naive testers of 2026-11-14 missed the folded "Dogs entering the US"). */}
+        {/* Naive testers of 2026-11-14, 2nd round: no visible way home or to "who publishes this" in the menu. */}
+        <div class="flex flex-wrap gap-x-6 border-b border-navy-100 py-3 text-sm font-semibold"><a href={homeHref} class="text-navy-900 hover:text-accent-600">Home</a><a href={route('about', lang)} class="text-navy-900 hover:text-accent-600">About this site</a></div>
         {cats.map((cat) => (
           <div class="border-b border-navy-100 py-2">
             <button class="mobile-section-toggle flex w-full items-center justify-between gap-3 py-2 text-left text-sm font-semibold text-navy-900" aria-expanded="true"><span class="min-w-0 [overflow-wrap:anywhere]">{cat.label}</span><svg class="mobile-chevron rotate-180 h-4 w-4 shrink-0 text-navy-400 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg></button>

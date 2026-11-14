@@ -6,7 +6,7 @@ const AP = (K.P as unknown as { aphis: { poultry: string[]; birdsMaxAsPets: numb
 
 export default definePage({
   id: 'aphis-pet-travel', group: 'abroad', order: 13, slug: 'aphis-pet-travel',
-  nav: 'APHIS pet travel: the USDA stamp on the certificate', card: 'Leaving or entering the US with a pet: which agency is in charge, which paper USDA endorses and what it costs.',
+  nav: 'USDA stamp on a pet health certificate (APHIS)', card: 'Leaving or entering the US with a pet: which agency is in charge, which paper USDA endorses and what it costs.',
   title: 'APHIS Pet Travel 2026: What USDA Checks, Signs and Charges',
   description: `APHIS pet travel in 2026: USDA endorses health certificates for a pet leaving the US (${K.usd(F.none)} without lab test), CDC handles dogs coming in, and when each applies.`,
   h1: 'APHIS pet travel: the USDA office that stamps your pet’s health certificate',
@@ -27,10 +27,10 @@ ${h.table(['Step', 'What happens', 'Who does it'], [
     ['1', 'Contact a USDA-accredited veterinarian as soon as the trip is decided', 'you'],
     ['2', 'Check the destination’s requirements, every trip, on its APHIS country page', 'you and the vet'],
     ['3', 'Fill in and sign the health certificate', 'the accredited vet'],
-    ['4', 'Have USDA stamp it, online through VEHCS (USDA’s system for vets) or by mail to an endorsement office, never both', 'the vet sends it, APHIS endorses'],
+    ['4', 'Have USDA stamp it: your vet sends it online, or it is mailed to a USDA office; never both', 'the vet sends it, USDA stamps it'],
     ['5', 'Carry the original signed or endorsed paperwork with the pet', 'you'],
   ], 'APHIS pet travel process for a pet leaving the United States', ['l', 'l', 'l'])}
-<p>For a mailed submission, APHIS strongly recommends an overnight express service and a shipper that gives a tracking number, and leaves the tracking record to the owner. Payment goes through a user fee account or, by mail, a card on the APHIS credit card sheet. A country missing from the APHIS list has its own case, which APHIS covers on a page about unknown requirements.</p>
+<p>For a mailed submission, APHIS strongly recommends an overnight express service and a shipper that gives a tracking number, and leaves the tracking record to the owner. Online, the vet pays from a USDA account; by mail, you pay by card on the APHIS payment form. A country missing from the APHIS list has its own case, which APHIS covers on a page about unknown requirements.</p>
 <h2>When APHIS endorsement is needed</h2>
 <p>The endorsement is the destination’s demand, not a US one. Among the countries this site covers, the European Union, Great Britain and Japan require it; Canada and Mexico do not. Canada asks a rabies certificate from a licensed vet; Mexico asks a screwworm inspection certificate for dogs, signed by a USDA-accredited vet within ${K.D.mexico.nwsDays} days of entry, and nothing for cats.</p>
 ${h.mini('aphis', { t: 'Another destination', p: ['dest', 'species'], d: { dest: 'japan' } })}

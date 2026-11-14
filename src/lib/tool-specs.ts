@@ -25,7 +25,7 @@ export const inches = (d: number[]) => `${d.map((x) => formatNumber(x, Number.is
 export const EX = { airline: 'delta', region: 'us', legs: 2, dims: [17, 11, 10], lb: 15 } as const;
 
 const AIRLINE_OPTIONS = AIRLINE_IDS.map((id) => ({ value: id, label: AIRLINES[id].name }));
-const AIR = (def: string = EX.airline): Input => ({ kind: 'select', id: 'airline', label: 'Airline', def, options: AIRLINE_OPTIONS, help: 'The five US airlines whose pet rules we could read at the source' });
+const AIR = (def: string = EX.airline): Input => ({ kind: 'select', id: 'airline', label: 'Airline', def, options: AIRLINE_OPTIONS, help: 'United, JetBlue and Allegiant are not covered yet: check their own pet page' });
 const ROUTE = (def: string = EX.region): Input => ({ kind: 'select', id: 'region', label: 'Where you fly', def, options: REGIONS, wide: true });
 const LEGS = (def: number = EX.legs): Input => ({ kind: 'choice', id: 'legs', label: 'Trip', def: String(def), options: [{ value: '1', label: 'One way' }, { value: '2', label: 'Round trip' }] });
 
@@ -46,13 +46,13 @@ export const cheapestOn = (r: string) => [...AIRLINE_IDS].filter((id) => cabinFe
  * as a fixed sentence, so that the yellow line and the result under it always describe the same case, whatever
  * values a page sets. tests/exemple-coherence.test.ts checks it for every calculator and every mini of every page.
  */
-const READ = 'Read on the airline’s own page or contract of carriage on November 13, 2026. Airlines change fees without notice: the booking screen is the price.';
+const READ = 'Read on the airline’s own pet page or official rules (contract of carriage) on November 13, 2026. Airlines change fees without notice: the booking screen is the price.';
 
 /** Fee for one pet in the cabin, on one airline and one route, with every airline side by side. */
 function fee(v: V): ToolOut {
   const a = s(v, 'airline'), r = s(v, 'region'), legs = Number(s(v, 'legs')) || 1;
   const c = cabinFee(a, r), A = AIRLINES[a];
-  const all = AIRLINE_IDS.map((id) => { const x = cabinFee(id, r); return [AIRLINES[id].name, x.status === 'yes' ? `${usd(x.fee)} each way` : x.status === 'no' ? 'No pet in the cabin' : 'Not published where we read', x.status === 'yes' ? usd(tripFee(x.fee, legs)) : x.status === 'no' ? 'No' : 'Ask the airline'] as string[]; });
+  const all = AIRLINE_IDS.map((id) => { const x = cabinFee(id, r); return [AIRLINES[id].name, x.status === 'yes' ? `${usd(x.fee)} each way` : x.status === 'no' ? 'No pet in the cabin' : 'Fee not published', x.status === 'yes' ? usd(tripFee(x.fee, legs)) : x.status === 'no' ? 'No' : 'Ask the airline'] as string[]; });
   const example = `Example: a small dog in the cabin on ${A.name}, ${tripWord(legs)}, ${routeInText(r)}`;
   const table = { caption: `In-cabin pet fee, ${routeInText(r)}`, headers: ['Airline', 'Fee', legs === 2 ? 'Round trip' : 'One way'], rows: all, align: ['l', 'l', 'r'] as Array<'l' | 'r'> };
   if (c.status === 'no') return { label: `${A.name}: pet in the cabin`, value: 'Not allowed', example, sub: `${A.name} takes no pet in the cabin on this route`, rows: [['Checked or cargo', A.checked]], table, note: READ };
@@ -66,23 +66,44 @@ function fee(v: V): ToolOut {
 }
 
 /** Does this carrier fit? Dimensions and weight against the published limits. */
+const list = (x: string[]) => (x.length <= 1 ? x.join('') : `${x.slice(0, -1).join(', ')} and ${x[x.length - 1]}`);
+/** A line of the carrier checker is "accepted" when it starts with "Fits" (the headline counts exactly these lines). */
+export const CARRIER_ACCEPTED = /^Fits\b/;
 function carrier(v: V): ToolOut {
-  const dims = [n(v, 'l'), n(v, 'w'), n(v, 'h')], soft = s(v, 'type') === 'soft', lb = n(v, 'lb');
+  const dims = [n(v, 'l'), n(v, 'w'), n(v, 'h')], soft = s(v, 'type') === 'soft', lb = n(v, 'lb'), focus = s(v, 'air');
   const res = AIRLINE_IDS.map((id) => ({ id, ...carrierCheck(id, dims, soft, lb) }));
-  const ok = res.filter((x) => x.verdict === 'fits').map((x) => AIRLINES[x.id].name);
-  const word: Record<string, string> = { fits: 'Within the limit', 'too big': 'Too big', 'too heavy': 'Too heavy', 'no limit published': 'No maximum published: must fit under the seat', 'soft only': 'Soft carriers only' };
-  /** Delta publishes no maximum but recommends a size (naive testers of 2026-11-14: "No size published" contradicted the
-   *  recommended size shown in the fee calculator): say whether the carrier fits the recommendation. */
+  /*
+   * Naive testers of 2026-11-14, 2nd round (all three): the headline "2 of 5 airlines" counted only the airlines with a
+   * published maximum the carrier meets, while the list under it showed Delta and Southwest as accepting it (no maximum
+   * published) and only Alaska as "Too big". The headline now counts every airline whose line says the carrier is
+   * accepted, and names those that refuse it; tests/carrier-count.test.ts checks headline = accepted lines.
+   */
+  const accepted = (x: typeof res[number]) => x.verdict === 'fits' || x.verdict === 'no limit published';
+  const word: Record<string, string> = { fits: 'Fits: within its published limit', 'too big': 'No: too big', 'too heavy': 'No: too heavy', 'no limit published': 'Fits if it slides under the seat: no maximum published', 'soft only': 'No: soft carriers only' };
+  /** Delta publishes no maximum but recommends a size: say whether the carrier fits the recommendation. */
   const verdict = (x: typeof res[number]) => {
     const rec = AIRLINES[x.id].carrierRec;
     if (x.verdict !== 'no limit published' || !rec || !soft) return word[x.verdict];
-    return fitsBox(dims, rec) ? `No maximum; fits the ${inches(rec)} it recommends` : `No maximum; larger than the ${inches(rec)} it recommends`;
+    return fitsBox(dims, rec) ? `Fits: no maximum, and within the ${inches(rec)} it recommends` : `Fits if it slides under the seat: no maximum, but larger than the ${inches(rec)} it recommends`;
   };
+  const why: Record<string, string> = { 'too big': 'too big', 'too heavy': 'too heavy', 'soft only': 'soft carriers only' };
+  const ok = res.filter(accepted), no = res.filter((x) => !accepted(x));
+  const sure = ok.filter((x) => x.verdict === 'fits' || (AIRLINES[x.id].carrierRec && soft && fitsBox(dims, AIRLINES[x.id].carrierRec!))).map((x) => AIRLINES[x.id].name);
+  const open = ok.map((x) => AIRLINES[x.id].name).filter((x) => !sure.includes(x));
+  const total = AIRLINE_IDS.length;
+  const count = ok.length === total ? `Fits on all ${total} airlines` : ok.length === 0 ? `Fits on none of the ${total} airlines` : `Fits on ${ok.length} of ${total} airlines`;
+  const refusedTxt = no.length ? `${no.map((x) => `${why[x.verdict]} for ${AIRLINES[x.id].name}`).join('; ')}${no.length === 1 ? ' only' : ''}` : '';
+  const detail = [sure.length ? `${list(sure)}: within the published or recommended size` : '', open.length ? `${list(open)}: no maximum published, it must slide under the seat` : ''].filter(Boolean).join('; ');
+  const sub = [refusedTxt, detail].filter(Boolean).join('. ').replace(/^./, (c) => c.toUpperCase());
   const lbTxt = formatNumber(lb, Number.isInteger(lb) ? 0 : 1);
+  const desc = `A ${soft ? 'soft' : 'hard'} carrier of ${inches(dims)}, ${lbTxt} lb`;
+  const f = res.find((x) => x.id === focus);
+  const fName = f ? AIRLINES[f.id].name : '';
+  const value = !f ? count : accepted(f) ? (sure.includes(fName) ? `Fits on ${fName}` : `No size limit on ${fName}`) : `${why[f.verdict][0].toUpperCase()}${why[f.verdict].slice(1)} for ${fName}`;
   return {
-    label: `A ${soft ? 'soft' : 'hard'} carrier of ${inches(dims)}, ${lbTxt} lb: airlines whose limit it meets`, value: `${ok.length} of ${AIRLINE_IDS.length} airlines`,
-    example: `Example: a ${soft ? 'soft' : 'hard'} carrier of ${inches(dims)}, ${lbTxt} lb with the pet inside`,
-    sub: ok.length ? `it meets the published maximum of ${ok.length === 1 ? ok[0] : `${ok.slice(0, -1).join(', ')} and ${ok[ok.length - 1]}`}` : 'it meets no published maximum',
+    label: f ? `${desc}: ${fName}` : `${desc}: airlines where it fits`, value,
+    example: `Example: a ${soft ? 'soft' : 'hard'} carrier of ${inches(dims)}, ${lbTxt} lb with the pet inside, ${f ? `on ${fName}` : 'on any of the five airlines'}`,
+    sub: f ? `${count}${refusedTxt ? `: ${refusedTxt}` : ''}` : sub,
     rows: res.map((x) => [AIRLINES[x.id].name, verdict(x)] as [string, string]),
     table: { caption: 'Published carrier limits, read November 13, 2026', headers: ['Airline', 'Your carrier', 'Limit'], rows: res.map((x) => [AIRLINES[x.id].name, verdict(x), x.limit]), align: ['l', 'l', 'l'] },
     note: 'We compare your largest side with the largest allowed side, and so on. Under-seat space varies by aircraft: an airline can refuse a carrier that does not fit under the seat in front of you.',
@@ -116,16 +137,17 @@ function cost(v: V): ToolOut {
   };
 }
 
-const HR_OPTIONS = [{ value: 'low', label: 'Only low-risk countries (Canada, Mexico, EU…)' }, ...HIGH_RISK.map((c) => ({ value: c, label: c }))];
+/** Option labels stay within two lines at 320 px (SelectField keeps 48 px up to two lines): longer ones made the field 61 px high (check-layout, 2026-11-14). */
+const HR_OPTIONS = [{ value: 'low', label: 'US or low-risk only (Canada, EU…)' }, ...HIGH_RISK.map((c) => ({ value: c, label: c }))];
 /** CDC rules for a dog entering the United States. */
 function cdc(v: V): ToolOut {
   const where = s(v, 'country'), hr = where !== 'low', vax = s(v, 'vax') as 'us' | 'abroad' | 'none', age = n(v, 'age');
   const p = cdcPathway(hr, vax);
   const young = age < CDC.minAgeMonths;
-  const rows: Array<[string, string]> = [['CDC Dog Import Form receipt', 'needed, for every dog'], ['Age', young ? `too young: ${CDC.minAgeMonths} months minimum` : `${formatNumber(age, 0)} months: meets the ${CDC.minAgeMonths}-month minimum`], ['Microchip', 'needed, readable by a universal scanner']];
-  let value = 'Receipt only', sub = 'plus the general rules: healthy, microchipped, 6 months or older';
-  if (p === 'usvax') { value = 'Receipt + US rabies form'; sub = 'Certification of U.S.-issued Rabies Vaccination, endorsed by USDA before the dog left the US'; rows.push(['Ports of entry', 'any port, as named on the receipt'], ['First vaccine', `${CDC.vaxBeforeLeaveDays} days at least before leaving the US`]); }
-  if (p === 'foreignvax') { value = 'Receipt + foreign form + facility'; sub = 'Certification of Foreign Rabies Vaccination and Microchip, and a reservation at a CDC-registered animal care facility'; rows.push(['Ports of entry', `by air only, at one of ${CDC.acf.length} airports with a facility`], ['Quarantine', `${CDC.quarantineDays} days at the facility unless the shortened protocol applies`]); }
+  const rows: Array<[string, string]> = [['CDC Dog Import Form', 'needed for every dog: online, no fee listed by CDC; keep the receipt'], ['Age', young ? `too young: ${CDC.minAgeMonths} months minimum` : `${formatNumber(age, 0)} months: meets the ${CDC.minAgeMonths}-month minimum`], ['Microchip', 'needed, readable by a universal scanner']];
+  let value = 'CDC form only', sub = 'fill in the CDC Dog Import Form online and keep the receipt; plus the general rules: healthy, microchipped, 6 months or older';
+  if (p === 'usvax') { value = 'CDC form + US rabies paper'; sub = 'the CDC Dog Import Form, plus the CDC rabies form for a dog vaccinated in the US (“Certification of U.S.-issued Rabies Vaccination”), signed by your vet and stamped by USDA before the dog left the US'; rows.push(['Ports of entry', 'any port, as named on the receipt'], ['First vaccine', `${CDC.vaxBeforeLeaveDays} days at least before leaving the US`]); }
+  if (p === 'foreignvax') { value = 'CDC form + foreign rabies paper + facility'; sub = 'the CDC Dog Import Form, the CDC rabies form for a dog vaccinated abroad (“Certification of Foreign Rabies Vaccination and Microchip”), and a booking at a CDC-registered animal care facility at the arrival airport'; rows.push(['Ports of entry', `by air only, at one of ${CDC.acf.length} airports with a facility`], ['Quarantine', `${CDC.quarantineDays} days at the facility unless the shortened protocol applies`]); }
   if (p === 'none') { value = 'Entry refused'; sub = 'A dog that was in a high-risk country in the last 6 months must be vaccinated against rabies'; }
   if (p === 'low') rows.push(['Ports of entry', 'any airport, seaport or land border']);
   return {
@@ -160,7 +182,7 @@ function endorse(v: V): ToolOut {
 }
 
 const TL_OPTIONS: Array<{ value: Dest; label: string }> = [
-  { value: 'eu', label: 'European Union (France, Italy, Spain, Germany…)' },
+  { value: 'eu', label: 'European Union (France, Italy…)' },
   { value: 'tapeworm', label: 'Ireland, Finland, Malta or Norway' },
   { value: 'uk', label: 'Great Britain' },
   { value: 'japan', label: 'Japan' },
@@ -254,7 +276,7 @@ function aphis(v: V): ToolOut {
     value: endorse === null ? 'Check the APHIS country page' : endorse ? `USDA stamp: ${usd(fee)}` : catMx ? 'No certificate' : 'No USDA endorsement',
     example,
     sub: endorse === null ? 'APHIS keeps one page per country; a USDA-accredited vet reads it with you' : endorse ? `the USDA fee to stamp (“endorse”) the health certificate your vet signs${tests ? `, with ${tests} laboratory test on it` : ''}; the vet’s own bill comes on top` : catMx ? 'Mexico has asked no health certificate for cats since 2019' : d === 'mexico' ? 'a screwworm inspection certificate signed by a USDA-accredited vet within 5 days of entry' : 'a rabies certificate from a licensed vet is enough',
-    rows: [['First step', 'a USDA-accredited veterinarian, as soon as the trip is decided'], ['How USDA stamps it', endorse ? 'online, sent by your vet through VEHCS (USDA’s system), or by mail; not both' : 'no USDA stamp needed'], ['Paper that travels', 'the original signed or endorsed paperwork'], ['Coming back', sp === 'dog' ? 'CDC Dog Import Form receipt' : 'no CDC form for this animal']],
+    rows: [['First step', 'a USDA-accredited veterinarian, as soon as the trip is decided'], ['How USDA stamps it', endorse ? 'your vet sends it to USDA online, or you mail it; not both' : 'no USDA stamp needed'], ['Paper that travels', 'the original signed or endorsed paperwork'], ['Coming back', sp === 'dog' ? 'CDC Dog Import Form receipt' : 'no CDC form for this animal']],
     note: 'APHIS pet travel process overview and fee schedule, both updated June 18, 2026. No USDA fee for a service dog under the ADA (Americans with Disabilities Act).',
   };
 }
@@ -278,15 +300,16 @@ const SPECS: Record<string, (arg?: Arg) => ToolSpec> = {
     { id: 'h', label: 'Height', def: EX.dims[2], unit: 'in', max: 40, decimals: 1 },
     { id: 'lb', label: 'Pet and carrier weight', def: EX.lb, unit: 'lb', max: 150, decimals: 1 },
     { kind: 'choice', id: 'type', label: 'Carrier type', def: 'soft', options: [{ value: 'soft', label: 'Soft-sided' }, { value: 'hard', label: 'Hard-sided' }], wide: true },
+    { kind: 'select', id: 'air', label: 'Your airline', def: 'any', options: [{ value: 'any', label: 'Any of the five airlines' }, ...AIRLINE_OPTIONS] },
   ], arg, carrier),
   cost: (arg = {}) => spec([AIR(), ROUTE(), LEGS(), { kind: 'select', id: 'dest', label: 'Entry rules of the destination', def: 'none', options: DEST_OPTIONS, wide: true }, { id: 'vet', label: 'Your vet’s price (exam and certificate)', def: 0, unit: '$', max: 5000, help: 'Ask your vet: we publish no vet price', adv: true, short: 'vet' }], arg, cost),
   cdc: (arg = {}) => spec([
-    { kind: 'select', id: 'country', label: 'Countries the dog was in during the last 6 months', def: 'low', options: HR_OPTIONS, wide: true, help: 'Pick a high-risk country if the dog was in any of them' },
+    { kind: 'select', id: 'country', label: 'Countries the dog was in during the last 6 months', def: 'low', options: HR_OPTIONS, wide: true, help: `High risk for dog rabies: the CDC lists ${HIGH_RISK.length} countries (Brazil, Dominican Republic, Turkey…). Pick one if the dog was in any of them` },
     { kind: 'select', id: 'vax', label: 'Rabies vaccine given', def: 'us', options: [{ value: 'us', label: 'In the United States' }, { value: 'abroad', label: 'Abroad' }, { value: 'none', label: 'Not vaccinated' }] },
     { id: 'age', label: 'Age of the dog', def: 36, unit: 'months', max: 300 },
   ], arg, cdc),
   form: (arg = {}) => spec([
-    { kind: 'choice', id: 'risk', label: 'Country the dog comes from', def: 'low', options: [{ value: 'low', label: 'Low-risk' }, { value: 'high', label: 'High-risk' }] },
+    { kind: 'choice', id: 'risk', label: 'Country the dog comes from', def: 'low', options: [{ value: 'low', label: 'Low-risk' }, { value: 'high', label: 'High-risk' }], help: 'Risk of dog rabies, by the CDC list: Canada, Mexico and the EU are low-risk; Brazil, Dominican Republic, Turkey are high-risk' },
     { id: 'months', label: 'Months since the receipt was issued', def: 2, unit: 'months', max: 24 },
   ], arg, form),
   endorse: (arg = {}) => spec([

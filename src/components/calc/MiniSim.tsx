@@ -35,6 +35,9 @@ import type { MiniInput } from '../../lib/mini-types';
 interface Props { kind: string; lang?: string; href?: string; title?: string; idPrefix?: string; defaults?: Record<string, number>; saisiParLeLecteur?: boolean;
   /** Champs fixés par la page : gardés à `defaults[id]` (sinon `def`), non affichés comme champs, nommés sous le formulaire. */
   locked?: string[];
+  /** flypetrules.com (testeurs naïfs du 2026-11-14, 2e tour : « Set by this page » contredisait « change any figure ») :
+   *  champs réglés par la page, rangés dans le repli « More about your case » et modifiables, comme les champs `avance`. */
+  replies?: string[];
   /** Ce que suppose l'exemple sur cette page ; remplace `spec.exemple`. */
   exemple?: string;
   /** flypetrules.com : libellé du lien propre à la page (« Full calculator: Delta pet policy ») ; remplace `spec.cta`. */
@@ -43,7 +46,7 @@ interface Props { kind: string; lang?: string; href?: string; title?: string; id
 /** Une valeur en mots longue (« Not eligible: 150 hours needed ») passe sous son libellé au lieu d'être coincée à droite. */
 export const valeurEnMots = (x: string) => x.length > 12 && /\p{L}{3}/u.test(x);
 
-export default function MiniSim({ kind, lang = 'en', href, title, idPrefix = 'm', defaults = {}, saisiParLeLecteur = false, locked = [], exemple, cta }: Props) {
+export default function MiniSim({ kind, lang = 'en', href, title, idPrefix = 'm', defaults = {}, saisiParLeLecteur = false, locked = [], replies = [], exemple, cta }: Props) {
   const spec = getSpec(kind, lang);
   const [v, setV] = useState<Record<string, number>>(() => Object.fromEntries(spec.inputs.map((i) => [i.id, defaults[i.id] ?? i.def])));
   const [touched, setTouched] = useState<Record<string, boolean>>(() => (saisiParLeLecteur ? Object.fromEntries(spec.inputs.map((i) => [i.id, true])) : {}));
@@ -57,14 +60,14 @@ export default function MiniSim({ kind, lang = 'en', href, title, idPrefix = 'm'
     : <NumberField key={i.id} id={fid(i.id)} label={i.label} value={v[i.id]} onChange={set(i.id)} unit={i.unit} max={i.max} decimals={i.decimals} help={i.help} />);
   const visibles = spec.inputs.filter((i) => !locked.includes(i.id) && (!i.showIf || i.showIf(v)));
   const fixes = spec.inputs.filter((i) => locked.includes(i.id));
-  const avances = visibles.filter((i) => i.avance);
+  const avances = visibles.filter((i) => i.avance || replies.includes(i.id));
   const lien: [string, string] | undefined = out.go ?? (href && (cta ?? spec.cta) ? [`${cta ?? spec.cta} →`, href] : undefined);
   return (
     <div data-chrome data-mini={kind} className="not-prose rechner-mini my-8 rounded-xl border border-accent-200 bg-white p-4 shadow-sm sm:p-5">
       <p className="text-base font-semibold text-navy-900">{title ?? spec.title}</p>
       <div className="mt-3 grid gap-5 sm:grid-cols-2">
         <form className="space-y-3" onSubmit={(e) => e.preventDefault()}>
-          {visibles.filter((i) => !i.avance).map(champ)}
+          {visibles.filter((i) => !i.avance && !replies.includes(i.id)).map(champ)}
           {avances.length > 0 && (
             <details data-repli className="rounded-lg border border-navy-200 px-3 py-2">
               <summary className="cursor-pointer text-sm font-medium text-navy-700">{lib.plusDeReglages}

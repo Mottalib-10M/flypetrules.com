@@ -42,11 +42,13 @@ export function getSpec(kind: string, lang: string): MiniSpec {
 }
 
 /** Props of a mini placed in a page by h.mini(kind, { t, p, d, c }): `p` = fields the reader changes, the other
- *  fields are set by the page and named under the form (`locked`); `d` = the page's values, in words, turned into ranks. */
+ *  fields are set by the page and put in the editable "More about your case" fold (`replies`); `d` = the page's values, in words, turned into ranks. */
 export function miniProps(kind: string, arg?: { t?: string; p?: string[]; d?: Record<string, number | string>; c?: string }) {
   const t = getTool(kind), a = arg ?? {};
   const shown = a.p ?? [t.inputs[0].id];
   const defaults: Record<string, number> = {};
   for (const i of t.inputs) if (a.d?.[i.id] !== undefined) defaults[i.id] = opts(i) ? rank(i, a.d[i.id]) : Number(a.d[i.id]);
-  return { title: a.t, defaults, locked: t.inputs.filter((i) => !shown.includes(i.id) && !i.adv).map((i) => i.id), cta: a.c };
+  // Naive testers of 2026-11-14, 2nd round: "Set by this page: Age of the dog: 36 months" read as a frozen field under a
+  // line saying "change any figure". The fields the page sets now sit in the "More about your case" fold, editable.
+  return { title: a.t, defaults, locked: [] as string[], replies: t.inputs.filter((i) => !shown.includes(i.id) && !i.adv).map((i) => i.id), cta: a.c };
 }

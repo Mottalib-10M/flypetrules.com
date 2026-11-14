@@ -5,7 +5,7 @@ const AA = K.A('american'), AS = K.A('alaska'), F9 = K.A('frontier'), DL = K.A('
 
 export default definePage({
   id: 'dog-carrier-size-airline', group: 'airlines', order: 7, slug: 'dog-carrier-size-airline',
-  nav: 'Dog carrier size by airline: does yours fit?', card: 'Enter your carrier’s three sides and weight: which airlines’ published limits it meets.',
+  nav: 'Will your carrier fit? Test it airline by airline', card: 'Enter your carrier’s three sides and weight: which airlines’ published limits it meets.',
   title: 'Airline Dog Carrier Size 2026: Will Your Carrier Fit Here?',
   description: `Dog carrier size by airline in 2026: the limits of Delta, American, Southwest, Alaska and Frontier, soft and hard, the ${AA.maxLb} lb weight rule, checked in one click.`,
   h1: 'Dog carrier size by airline: will yours fit under the seat?',

@@ -11,7 +11,7 @@ const fitsAS = fitsBox(EXD, AS.carrier!.soft!), fitsAA = fitsBox(EXD, AA.carrier
 
 export default definePage({
   id: 'dog-carrier', group: 'airlines', order: 0, slug: 'dog-carrier',
-  nav: 'Dog carrier: the size your dog needs', card: 'Four measurements of your dog give the smallest carrier by the IATA formula, checked against each airline’s cabin limit.',
+  nav: 'Dog carrier: the size from your dog’s measurements', card: 'Four measurements of your dog give the smallest carrier by the IATA formula, checked against each airline’s cabin limit.',
   title: 'Dog Carrier 2026: Size It to Your Dog With the IATA Formula',
   description: `Dog carrier sizing in 2026: measure your dog four times, get the IATA minimum inside size, and see which airline cabin limits a carrier that size can meet.`,
   h1: 'Dog carrier: size it to your dog, then to the airline',

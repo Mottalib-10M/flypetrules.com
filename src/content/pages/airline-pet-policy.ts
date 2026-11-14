@@ -42,7 +42,7 @@ ${h.mini('cost', { t: 'Fees of your whole trip', p: ['airline', 'region'] })}
 <h2>Airlines we could not read</h2>
 <p>United, JetBlue and Allegiant also fly pets, but their pages refused our automated reading on November 13, 2026, so this site gives no figure for them rather than one copied from elsewhere. Check their own pages before booking.</p>
 `,
-  tool: 'fee', toolArg: { airline: 'delta', region: 'us', legs: 1 },
+  tool: 'fee', toolArg: { airline: 'delta', region: 'us', legs: 2 },
   related: ['dog-carrier-size-airline', 'how-much-does-it-cost-to-fly-a-dog', 'delta-pet-policy', 'southwest-pet-policy'],
   sources: ['delta_pets', 'delta_cargo', 'aa_pets', 'wn_coc', 'wn_fees', 'as_coc', 'as_dogs', 'f9_faq', 'f9_fees'],
 });
