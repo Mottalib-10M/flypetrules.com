@@ -129,3 +129,6 @@ details.fold > summary::-webkit-details-marker { display: none; }
 details.fold > summary::before { content: "\25B8"; flex: none; font-size: 1.1rem; color: var(--color-accent-700); transition: transform .15s; }
 details.fold[open] > summary::before { transform: rotate(90deg); }
 details.fold > summary > .fold-h { margin-top: 1.25rem; margin-bottom: .75rem; }
+
+/* Champs en subgrid : quand le formulaire est étiré à la hauteur du résultat voisin, ses rangées ne doivent pas s'étirer (trous entre libellé, case et aide). */
+:where(form, div, fieldset):has(> .grid-rows-subgrid) { align-content: start; }
